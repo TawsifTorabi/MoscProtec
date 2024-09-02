@@ -1,0 +1,142 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* General Styles */
+body {
+    /* background-color: #E6F8EC; Light mint green background color */
+    font-family: 'Poppins', sans-serif; /* Default font family */
+    margin: 0;
+    padding: 0;
+}
+
+/* Header and Navigation Styles */
+.navbar {
+    background-color: #2AAF51; /* Green background for navbar */
+    padding: 10px 20px;
+}
+
+.navbar-brand {
+    color: white; /* White logo text */
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+    color: white; /* White color for nav links */
+    margin-right: 20px;
+    font-size: 1rem;
+    text-transform: capitalize;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #FFD700; /* Gold color on hover */
+}
+
+/* Button Styles */
+.btn-custom {
+    background-color: #FFD700; /* Custom gold color for buttons */
+    color: #333; /* Dark text color */
+    border: none;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.btn-custom:hover {
+    background-color: #FFAA00; /* Darker gold on hover */
+    color: white;
+}
+
+/* Hero Section Styles */
+.hero-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+.hero-text {
+    max-width: 50%;
+    color: #333; /* Dark text color */
+}
+
+.hero-text h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+.hero-image {
+    max-width: 45%;
+}
+
+.hero-image img {
+    width: 100%;
+}
+
+/* Register Button */
+.register-btn {
+    background-color: #2AAF51; /* Same green color as navbar */
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-btn:hover {
+    background-color: #248a42; /* Darker green on hover */
+    color: white;
+}
+
+/* Custom Style for Sign Up Button */
+.sign-up-btn {
+    background-color: #000; /* Black button */
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+.sign-up-btn:hover {
+    background-color: #333; /* Darker black on hover */
+}
+
+
+.max-w-img{
+    width: 100%;
+    opacity: 0.5;
+}
+
+.ban_mosc_img {
+    margin-top: 5em;
+    width: 679px;
+    height: auto;
+    margin-left: -106px;
+}
+
+.hero_title {
+    font-size: 5em;
+    margin-top: 6rem;
+}
+
+.large_btn{
+    font-size: 1.2rem;
+}
+
+.first_feature {
+    background: url(../img/BACKGROUND.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.text-muted-2{
+    color: #EA4335;
+}
