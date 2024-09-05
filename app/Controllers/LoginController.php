@@ -2,103 +2,41 @@
 
 namespace App\Controllers;
 use App\Models\UserModel;
+use CodeIgniter\Controller;
 
 class LoginController extends BaseController
 {
-
-    //////////////////////////////////////////////Show Login Page///////////////////////////////////////////////////////
-    public function index()
+    // Utility method to check if the user is logged in and valid
+    private function checkSessionValidity()
     {
-        // Start session
         $session = session();
-        
-        // Check if the user is logged in
+
         if ($session->get('isLoggedIn')) {
-            // Load User model
-            $userModel = new UserModel();
-            $user = $userModel->find($session->get('user_id'));
+            $userId = $session->get('user_id');
+            $sessionId = $session->get('session_id');
 
-            if ($user) {
-                // Redirect based on user type
-                if ($user['usertype'] == 'user') {
-                    return redirect()->to('user/dashboard');
-                } elseif ($user['usertype'] == 'admin') {
-                    return redirect()->to('admin/dashboard');
-                }
-            }
-        }
-        
-        // If not logged in or user not found, show the login page
-        echo view('includes/public/login/Login_header.php');
-        echo view('includes/public/login/Login_body.php');
-        echo view('includes/public/footer.php');
-        echo view('includes/public/body_static_inc.php');
-    }
+            // Verify session validity from the database
+            $db = \Config\Database::connect();
+            $sessionData = $db->table('user_sessions')
+                ->where('user_id', $userId)
+                ->where('session_id', $sessionId)
+                ->where('is_valid', 1)
+                ->get()
+                ->getRow();
 
-    
-    
-
-    //////////////////////////////////////////////Process User Login////////////////////////////////////////////////////
-    public function login()
-    {
-        helper(['form', 'url']);
-        $session = session();
-
-        // Define validation rules
-        $validation = \Config\Services::validation();
-        $validation->setRules([
-            'email' => 'required|valid_email',
-            'password' => 'required|min_length[4]'
-        ]);
-
-        // Get the POST data
-        $email = $this->request->getVar('email');
-        $password = $this->request->getVar('password');
-
-        // Check if POST data is empty
-        if (empty($email) || empty($password)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Email and password are required.']);
-        }
-
-        // Run validation
-        if (!$validation->withRequest($this->request)->run()) {
-            // Return validation errors
-            return $this->response->setJSON(['status' => 'error', 'message' => $validation->getErrors()]);
-        }
-
-        // Load User model
-        $userModel = new UserModel();
-        $user = $userModel->where('email', $email)->first();
-
-        if ($user) {
-            // Verify the password
-            if (password_verify($password, $user['password'])) {
-                // Update lastseentime with Unix timestamp
-                $userModel->update($user['id'], ['lastseen' => time()]);
-
-                // Set session data
-                $session->set([
-                    'user_id' => $user['id'],
-                    'usertype' => $user['usertype'],
-                    'isLoggedIn' => true
-                ]);
-
-                // Determine the redirect URL
-                $redirectUrl = ($user['usertype'] === 'admin') ? base_url('admin/dashboard') : base_url('user/dashboard');
-
-                // Return success response with redirection URL
-                return $this->response->setJSON(['status' => 'success', 'message' => 'Logged In!', 'redirect_url' => $redirectUrl]);
+            if ($sessionData) {
+                return true;
             } else {
-                return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid email or password']);
+                // Invalidate the session if it's not valid
+                $session->destroy();
+                return false;
             }
-        } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid email or password']);
         }
+        return false;
     }
 
-    
-    ////////////////////////////////////////////////////Check User Login Status////////////////////////////////////////////////////
-    public function checkLoginStatus()
+    ///////////////////////////////////////////Get Redirect Address / checkLoginStatus///////////////////////////
+    public function getRedirectAddress()
     {
         // Start session
         $session = session();
@@ -108,13 +46,17 @@ class LoginController extends BaseController
             // Load User model
             $userModel = new UserModel();
             $user = $userModel->find($session->get('user_id'));
-
+            
             if ($user) {
-                // Return JSON response with user details
+                // Determine the redirect URL based on user type
+                $redirectUrl = ($user['usertype'] === 'admin') ? 'admin/dashboard' : 'user/dashboard';
+
+                // Return JSON response with user details and redirect URL
                 return $this->response->setJSON([
                     'status' => 'success',
                     'message' => 'User is logged in',
                     'usertype' => $user['usertype'],
+                    'redirect' => $redirectUrl,
                     'data' => [
                         'name' => $user['name'], // Assuming you have a 'name' field in your user table
                         'username' => $user['username'] // Assuming you have a 'username' field in your user table
@@ -131,86 +73,125 @@ class LoginController extends BaseController
     }
 
 
+    //////////////////////////////////////////////Show Login Page///////////////////////////////////////////////////////
+    public function index()
+    {
+        if ($this->checkSessionValidity()) {
+            $userModel = new UserModel();
+            $user = $userModel->find(session()->get('user_id'));
+
+            if ($user) {
+                $redirectUrl = ($user['usertype'] === 'admin') ? 'admin/dashboard' : 'user/dashboard';
+                return redirect()->to($redirectUrl);
+            }
+        }
+
+        // Show the login page if not logged in
+        echo view('includes/public/login/Login_header.php');
+        echo view('includes/public/login/Login_body.php');
+        echo view('includes/public/footer.php');
+        echo view('includes/public/body_static_inc.php');
+    }
+
+    //////////////////////////////////////////////Process User Login////////////////////////////////////////////////////
+    public function login()
+    {
+        helper(['form', 'url']);
+        $session = session();
+
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'email' => 'required|valid_email',
+            'password' => 'required|min_length[4]'
+        ]);
+
+        $email = $this->request->getVar('email');
+        $password = $this->request->getVar('password');
+
+        if (empty($email) || empty($password)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Email and password are required.']);
+        }
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $validation->getErrors()]);
+        }
+
+        $userModel = new UserModel();
+        $user = $userModel->where('email', $email)->first();
+
+        if ($user && password_verify($password, $user['password'])) {
+            $userModel->update($user['id'], ['lastseen' => time()]);
+
+            $sessionId = session_id();
+            $userAgent = $this->request->getUserAgent();
+            $ipAddress = $this->request->getIPAddress();
+
+            $db = \Config\Database::connect();
+            $db->table('user_sessions')->insert([
+                'user_id' => $user['id'],
+                'session_id' => $sessionId,
+                'user_agent' => $userAgent,
+                'ip_address' => $ipAddress,
+                'is_valid' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+                'last_activity' => date('Y-m-d H:i:s')
+            ]);
+
+            $session->set([
+                'user_id' => $user['id'],
+                'session_id' => $sessionId,
+                'usertype' => $user['usertype'],
+                'isLoggedIn' => true
+            ]);
+
+            $redirectUrl = ($user['usertype'] === 'admin') ? base_url('admin/dashboard') : base_url('user/dashboard');
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Logged In!', 'redirect_url' => $redirectUrl]);
+        } else {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid email or password']);
+        }
+    }
+
     ////////////////////////////////////////////////////Logout//////////////////////////////////////////////////////////////////////////
     public function logout()
     {
         $session = session();
-        
-        // Destroy the session
+        $sessionId = $session->get('session_id');
+
+        if ($sessionId) {
+            $db = \Config\Database::connect();
+            $db->table('user_sessions')->where('session_id', $sessionId)->update(['is_valid' => 0]);
+        }
+
         $session->destroy();
-        
-        // Return a response indicating successful logout
         return redirect()->to('login');
     }
-
-    ////////////////////////////////////////////////////Get User Redirection Address////////////////////////////////////////////////////
-    public function getRedirectAddress()
-    {
-        // Start session
-        $session = session();
-        
-        // Check if the user is logged in
-        if ($session->get('isLoggedIn')) {
-            // Load User model
-            $userModel = new UserModel();
-            $user = $userModel->find($session->get('user_id'));
-            if ($user) {
-                if($user['usertype'] == 'user'){
-                    return $this->response->setJSON(['status' => 'success', 'redirect' => 'user/dashboard']);
-                }
-                if($user['usertype'] == 'admin'){
-                    return $this->response->setJSON(['status' => 'success', 'redirect' => 'admin/dashboard']);
-                }
-            } else {
-                // Return JSON response if user data is not found
-                return $this->response->setJSON(['status' => 'error', 'message' => 'User data not found']);
-            }
-        } else {
-            // Return JSON response if user is not logged in
-            return $this->response->setJSON(['status' => 'error', 'message' => 'User is not logged in']);
-        }
-    }
-
-    
-
 
     //////////////////////////////////////////////Show Sign Up Page///////////////////////////////////////////////////////
     public function signup()
     {
-        // Start session
-        $session = session();
-        
-        // Check if the user is logged in
-        if ($session->get('isLoggedIn')) {
-            // Load User model
+        if ($this->checkSessionValidity()) {
             $userModel = new UserModel();
-            $user = $userModel->find($session->get('user_id'));
+            $user = $userModel->find(session()->get('user_id'));
 
             if ($user) {
-                // Redirect based on user type
-                if ($user['usertype'] == 'user') {
-                    return redirect()->to('user/dashboard');
-                } elseif ($user['usertype'] == 'admin') {
-                    return redirect()->to('admin/dashboard');
-                }
+                $redirectUrl = ($user['usertype'] === 'admin') ? 'admin/dashboard' : 'user/dashboard';
+                return redirect()->to($redirectUrl);
             }
         }
-        
+
         echo view('includes/public/signup/Signup_header.php');
         echo view('includes/public/signup/Signup_body.php');
         echo view('includes/public/footer.php');
         echo view('includes/public/body_static_inc.php');
     }
 
-    
     //////////////////////////////////////////////Process User Sign Up////////////////////////////////////////////////////
     public function signupProcess()
     {
         helper(['form', 'url']);
-        $session = session(); // Start session
+        $session = session();
         $validation = \Config\Services::validation();
 
-        // Define validation rules
         $validation->setRules([
             'email' => 'required|valid_email',
             'name' => 'required|min_length[3]',
@@ -222,7 +203,6 @@ class LoginController extends BaseController
             'confirmPassword' => 'required|matches[password]'
         ]);
 
-        // Get the POST data
         $email = $this->request->getVar('email');
         $name = $this->request->getVar('name');
         $phone = $this->request->getVar('phone');
@@ -231,24 +211,18 @@ class LoginController extends BaseController
         $bloodGroup = $this->request->getVar('blood_group');
         $password = $this->request->getVar('password');
 
-        // Run validation
         if (!$validation->withRequest($this->request)->run()) {
-            // Return validation errors
             return $this->response->setJSON(['status' => 'error', 'message' => $validation->getErrors()]);
         }
 
-        // Load User model
         $userModel = new UserModel();
 
-        // Check if the email already exists in the database
         if ($userModel->where('email', $email)->first()) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Email already exists.']);
         }
 
-        // Hash the password
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        // Save user data
         $userId = $userModel->insert([
             'email' => $email,
             'name' => $name,
@@ -257,29 +231,20 @@ class LoginController extends BaseController
             'gender' => $gender,
             'blood_group' => $bloodGroup,
             'password' => $hashedPassword,
-            'usertype' => 'general' // or set this based on your application logic
+            'usertype' => 'general'
         ]);
 
-        // Check if the user was saved successfully
         if ($userId) {
-            // Set session data to log the user in
             $session->set([
                 'user_id' => $userId,
-                'usertype' => 'general', // Or the appropriate user type
+                'usertype' => 'general',
                 'isLoggedIn' => true
             ]);
 
-            // Determine the redirect URL
-            $redirectUrl = base_url('user/getstarted'); // Adjust this URL if necessary
-
-            // Return success response with redirection URL
+            $redirectUrl = base_url('user/getstarted');
             return $this->response->setJSON(['status' => 'success', 'message' => 'User registered successfully', 'redirect_url' => $redirectUrl]);
         } else {
-            // Return error response if user registration failed
             return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to register user.']);
         }
     }
-
-
-
 }

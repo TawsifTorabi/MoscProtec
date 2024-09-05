@@ -6,22 +6,29 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
+ //Public Pages
 $routes->get('/', 'HomeController::index');
 $routes->get('/home', 'HomeController::index');
 
 
-$routes->get('/login', 'LoginController::index');
-$routes->post('/login/process', 'LoginController::login');
-$routes->get('/login/checkStatus', 'LoginController::checkLoginStatus');
-$routes->get('/login/getRedirectAddress', 'LoginController::getRedirectAddress');
-$routes->get('/logout', 'LoginController::logout');
+//Authenticators and User Basic Information API
+$routes->get('/login', 'LoginController::index');                                       //Login Page
+$routes->post('/login/process', 'LoginController::login');                              //Login API
+$routes->get('/login/checkStatus', 'LoginController::getRedirectAddress');              //Authentication Status after Login
+$routes->get('/login/getRedirectAddress', 'LoginController::getRedirectAddress');       //Same Shit, Too lazy to update the Javascript
+$routes->get('/logout', 'LoginController::logout');                                     //Logout API
 
-$routes->get('/signup', 'LoginController::signup');
-$routes->post('/signup/process', 'LoginController::signupProcess');
+//Signup and Registration Processors
+$routes->get('/signup', 'LoginController::signup');                                     //Signup Page
+$routes->post('/signup/process', 'LoginController::signupProcess');                     //Signup API
 
-
-$routes->get('/user/getstarted', 'UserController::GetStarted');
+//User Onboarding Pages (For New Users)
+$routes->get('/user/getstarted', 'UserController::GetStarted');                         
 $routes->get('/user/onboard', 'UserController::onboardRedirect');
 $routes->get('/user/uploadphoto', 'UserController::UploadProfilePhoto');
 $routes->get('/user/dashboard', 'UserController::Dashboard');
+
+$routes->get('/user/manageSessions', 'UserController::manageSessions');
+$routes->get('/user/invalidateSession/(:any)', 'UserController::invalidateSession/$1');
+
 

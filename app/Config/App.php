@@ -6,6 +6,8 @@ use CodeIgniter\Config\BaseConfig;
 
 class App extends BaseConfig
 {
+    public $sessionDriver = 'CodeIgniter\Session\Handlers\DatabaseHandler';
+    public $sessionSavePath = 'ci_sessions'; // The table name created in the database  
     /**
      * --------------------------------------------------------------------------
      * Base Site URL

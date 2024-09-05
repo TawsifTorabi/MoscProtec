@@ -29,6 +29,46 @@ class UserController extends BaseController
             
             return redirect()->to('/login');
         }
+
+        
+
+        ///////////////////////////////////////////////Session Management////////////////////////////////////////////
+        public function manageSessions()
+        {
+            $session = session();
+            $userId = $session->get('user_id');
+        
+            if (!$userId) {
+                return redirect()->to('login');
+            }
+        
+            // Get all sessions for the user
+            $db = \Config\Database::connect();
+            $sessions = $db->table('user_sessions')->where('user_id', $userId)->get()->getResult();
+        
+            return view('manage_sessions', ['sessions' => $sessions]);
+        }
+        
+        public function invalidateSession($sessionId)
+        {
+            $session = session();
+            $userId = $session->get('user_id');
+        
+            if (!$userId) {
+                return redirect()->to('login');
+            }
+        
+            // Invalidate the specific session
+            $db = \Config\Database::connect();
+            $db->table('user_sessions')->where(['user_id' => $userId, 'session_id' => $sessionId])->update(['is_valid' => 0]);
+        
+            return redirect()->to('user/manageSessions');
+        }
+        
+    
+    
+
+
        
         //////////////////////////////////////////////Direct User to Designated Dashboard/////////////////////////////////////////
         public function onboardRedirect()
