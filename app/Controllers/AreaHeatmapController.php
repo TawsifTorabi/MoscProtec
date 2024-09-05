@@ -9,7 +9,7 @@ class AreaHeatmapController extends BaseController
         
     //////////////////////////////////////////////Dashboard/////////////////////////////////////////////////
     public function index(){
-        $data['title'] = 'Home Page';
+        $data['title'] = 'Mosquito HeatZones';
         echo view('includes\user\AreaHeatMap\HeatMap_Header.php', $data);
         echo view('includes\user\AreaHeatMap\HeatMap_Head_Assets.php');
         echo view('includes\user\AreaHeatMap\HeatMap_Navigation.php');
