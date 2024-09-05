@@ -244,3 +244,15 @@ in SYSTEMPATH\Exceptions\FrameworkException.php on line 41.
  7 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
  8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-09-05 16:35:38 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "includes\user\AreaHeatMap\HeatMapMain.php"
+[Method: GET, Route: user/heatmap]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 41.
+ 1 SYSTEMPATH\View\View.php(222): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('includes\\user\\AreaHeatMap\\HeatMapMain.php')
+ 2 SYSTEMPATH\Common.php(1169): CodeIgniter\View\View->render('includes\\user\\AreaHeatMap\\HeatMapMain.php', [], true)
+ 3 APPPATH\Controllers\AreaHeatmapController.php(13): view('includes\\user\\AreaHeatMap\\HeatMapMain.php', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\AreaHeatmapController->index()
+ 5 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AreaHeatmapController))
+ 6 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
