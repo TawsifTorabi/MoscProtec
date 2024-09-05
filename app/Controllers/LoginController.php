@@ -7,7 +7,7 @@ use CodeIgniter\Controller;
 class LoginController extends BaseController
 {
     // Utility method to check if the user is logged in and valid
-    private function checkSessionValidity()
+    public function checkSessionValidity()
     {
         $session = session();
 
@@ -42,7 +42,7 @@ class LoginController extends BaseController
         $session = session();
         
         // Check if the user is logged in
-        if ($session->get('isLoggedIn')) {
+        if ($this->checkSessionValidity()) {
             // Load User model
             $userModel = new UserModel();
             $user = $userModel->find($session->get('user_id'));

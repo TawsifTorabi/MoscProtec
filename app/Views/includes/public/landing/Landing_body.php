@@ -12,7 +12,7 @@
                     <li class="nav-item"><a class="nav-link" href="#">Community</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Our Partners</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-                    <?php if ($isLoggedIn): ?>
+                    <?php if ($sessionValid == true): ?>
                         <?php
                         // Load User model
                         $userModel = new \App\Models\UserModel();

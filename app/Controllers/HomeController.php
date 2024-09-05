@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\UserModel; // Import the UserModel
+use App\Controllers\LoginController;
 
 class HomeController extends BaseController
 {
@@ -10,14 +11,21 @@ class HomeController extends BaseController
         // Start session
         $session = session();
         
-        // Initialize data array
-        $data = [
-            'isLoggedIn' => $session->get('isLoggedIn'),
-            'user_id' => $session->get('user_id')
-        ];
+        $data = ['sessionValid' => false];
+        $LoginController = new LoginController();
 
         // Check if the user is logged in and user exists
-        if ($data['isLoggedIn']) {
+        if ($LoginController->checkSessionValidity()) {
+
+            $sessionValid = true;
+            
+            // Initialize data array
+            $data = [
+                'isLoggedIn' => $session->get('isLoggedIn'),
+                'user_id' => $session->get('user_id'),
+                'sessionValid' => true
+            ];
+
             $userModel = new UserModel();
             $user = $userModel->find($data['user_id']);
         }
