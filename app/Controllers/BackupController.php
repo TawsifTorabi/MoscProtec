@@ -18,13 +18,6 @@ class BackupController extends Controller
         $db = Database::connect();
         $conn = $db->getConnection();
 
-        // if (!$conn) {
-        //     die("Failed to connect to the database.");
-        // }
-
-        // Set the charset
-        //$conn->set_charset("utf8");
-
         // Get All Table Names From the Database
         $tables = [];
         $sql = "SHOW TABLES";

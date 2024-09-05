@@ -31,11 +31,12 @@ $routes->get('/user/onboard', 'UserController::onboardRedirect');
 $routes->get('/user/uploadphoto', 'UserController::UploadProfilePhoto');
 $routes->get('/user/dashboard', 'UserController::Dashboard');
 
-
 //Admin Operations
 $routes->get('/admin/database/backup/download', 'BackupController::DownloadDatabaseSQL');
 
-
+//Heatmap
+//User Heatmap Views
+$routes->get('/user/heatmap', 'AreaHeatmapController::index');
 
 
 
