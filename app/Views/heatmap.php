@@ -20,8 +20,8 @@
     <div id="map"></div>
     <script>
         async function initMap() {
-            // Initialize the map
-            const map = L.map('map').setView([0, 0], 2); // Set default center (customize as needed)
+            // Initialize the map with a default center (this will be overridden)
+            const map = L.map('map').setView([0, 0], 2);
 
             // Add OpenStreetMap tile layer
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -30,11 +30,12 @@
             }).addTo(map);
 
             // Fetch location data from the server
-            const response = await fetch("<?= site_url('/user/heatmap/getLocations'); ?>");
+            const response = await fetch("<?= site_url('user/heatmap/getLocations'); ?>");
             const data = await response.json();
 
-            // Convert data to heatmap format
+            // Convert data to heatmap format and find bounds
             const heatmapData = data.map(loc => [loc.latitude, loc.longitude, 0.5]); // Third value is intensity (0.0 to 1.0)
+            const bounds = L.latLngBounds(heatmapData.map(loc => [loc[0], loc[1]]));
 
             // Create a heatmap layer
             L.heatLayer(heatmapData, {
@@ -42,6 +43,9 @@
                 blur: 15,      // Adjust the blur
                 maxZoom: 17,   // Adjust the max zoom
             }).addTo(map);
+
+            // Fit the map view to the bounds of the data points
+            map.fitBounds(bounds);
         }
 
         // Initialize the map
