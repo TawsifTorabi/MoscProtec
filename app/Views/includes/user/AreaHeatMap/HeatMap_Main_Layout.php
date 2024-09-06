@@ -143,7 +143,8 @@
 
                             <div id="map"></div>
                             <script>
-                            let map, heatmapLayer;
+                                let map, heatmapLayer;
+                                let debounceTimeout; // Global variable to handle the debounce timer
 
                                 async function initMap() {
                                     // Initialize the map
@@ -195,6 +196,17 @@
                                     }
                                 }
 
+                                // Debounce function to delay the execution of the search
+                                function debounce(func, delay) {
+                                    return function() {
+                                        const context = this;
+                                        const args = arguments;
+                                        clearTimeout(debounceTimeout);
+                                        debounceTimeout = setTimeout(() => func.apply(context, args), delay);
+                                    };
+                                }
+
+                                // Function to fetch suggestions from OpenStreetMap API
                                 async function fetchSuggestions() {
                                     const query = document.getElementById('location-input').value;
                                     if (query.length < 2) {
@@ -226,7 +238,11 @@
 
                                 // Initialize the map
                                 window.onload = initMap;
+
+                                // Attach the debounce function to the search input, delaying the fetch by 300 milliseconds
+                                document.getElementById('location-input').addEventListener('input', debounce(fetchSuggestions, 300));
                             </script>
+
                             <!-- <div class="col-md-4">
                                 <div class="card-body">
                                     <div class="text-center">
