@@ -37,6 +37,8 @@ $routes->get('/admin/database/backup/download', 'BackupController::DownloadDatab
 //Heatmap
 //User Heatmap Views
 $routes->get('/user/heatmap', 'AreaHeatmapController::index');
+$routes->get('/user/heatmap/demo', 'AreaHeatmapController::demo');
+$routes->get('/user/heatmap/getLocations', 'HeatmapController::getLocations');
 
 
 
