@@ -108,10 +108,10 @@
 
         <div class="container-xxl flex-grow-1 container-p-y">
             <div class="row">
-                <div class="col-lg-8 mb-4 order-0">
+                <!-- <div class="col-lg-13 mb-4 order-0">
                     <div class="card">
                         <div class="d-flex align-items-end row">
-                            <div class="col-sm-7">
+                            <div class="col-sm-4">
                                 <div class="card-body">
                                     <h5 class="card-title text-primary">Congratulations John! 🎉</h5>
                                     <p class="mb-4">
@@ -122,96 +122,111 @@
                                     <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Badges</a>
                                 </div>
                             </div>
-                            <div class="col-sm-5 text-center text-sm-left">
-                                <div class="card-body pb-0 px-0 px-md-4">
-                                    <img
-                                        src="../assets/img/illustrations/man-with-laptop-light.png"
-                                        height="140"
-                                        alt="View Badge User"
-                                        data-app-dark-img="illustrations/man-with-laptop-dark.png"
-                                        data-app-light-img="illustrations/man-with-laptop-light.png" />
-                                </div>
-                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-4 order-1">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-12 col-6 mb-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img
-                                                src="../assets/img/icons/unicons/chart-success.png"
-                                                alt="chart success"
-                                                class="rounded" />
-                                        </div>
-                                        <div class="dropdown">
-                                            <button
-                                                class="btn p-0"
-                                                type="button"
-                                                id="cardOpt3"
-                                                data-bs-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                                <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <span class="fw-semibold d-block mb-1">Profit</span>
-                                    <h3 class="card-title mb-2">$12,628</h3>
-                                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-6 mb-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img
-                                                src="../assets/img/icons/unicons/wallet-info.png"
-                                                alt="Credit Card"
-                                                class="rounded" />
-                                        </div>
-                                        <div class="dropdown">
-                                            <button
-                                                class="btn p-0"
-                                                type="button"
-                                                id="cardOpt6"
-                                                data-bs-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                                <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                                <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <span>Sales</span>
-                                    <h3 class="card-title text-nowrap mb-1">$4,679</h3>
-                                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </div> -->
+
                 <!-- Total Revenue -->
                 <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
                     <div class="card">
                         <div class="row row-bordered g-0">
                             <div class="col-md-8">
-                                <h5 class="card-header m-0 me-2 pb-3">Total Revenue</h5>
-                                <div id="totalRevenueChart" class="px-2"></div>
+                                <h5 class="card-header m-0 me-2 pb-3">Mosquito Risk Zones Near You</h5>
+                                <div class="search-container">
+                                    <input type="text" id="location-input" placeholder="Search for locations..." oninput="fetchSuggestions()">
+                                    <div id="suggestions">
+                                        <ul id="suggestion-list"></ul>
+                                    </div>
+                                </div>
+
                             </div>
-                            <div class="col-md-4">
+
+                            <div id="map"></div>
+                            <script>
+                            let map, heatmapLayer;
+
+                                async function initMap() {
+                                    // Initialize the map
+                                    map = L.map('map').setView([0, 0], 2); // Default center
+
+                                    // Add OpenStreetMap tile layer
+                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                        maxZoom: 18,
+                                        attribution: '&copy; OpenStreetMap contributors'
+                                    }).addTo(map);
+
+                                    // Request user's location and center the map
+                                    if (navigator.geolocation) {
+                                        navigator.geolocation.getCurrentPosition(position => {
+                                            const userLat = position.coords.latitude;
+                                            const userLng = position.coords.longitude;
+                                            map.setView([userLat, userLng], 13); // Center map on user's location
+                                        }, () => {
+                                            console.log("Location access denied.");
+                                        });
+                                    } else {
+                                        console.log("Geolocation is not supported by this browser.");
+                                    }
+
+                                    // Create a heatmap layer
+                                    heatmapLayer = L.heatLayer([], {
+                                        radius: 20,
+                                        blur: 15,
+                                        maxZoom: 17
+                                    }).addTo(map);
+
+                                    await loadHeatmapData();
+                                }
+
+                                async function loadHeatmapData() {
+                                    const response = await fetch("<?= site_url('user/heatmap/getLocations'); ?>");
+                                    const data = await response.json();
+
+                                    // Convert data to heatmap format
+                                    const heatmapData = data.map(loc => [loc.latitude, loc.longitude, 0.5]); // Adjust intensity
+
+                                    // Update heatmap layer
+                                    heatmapLayer.setLatLngs(heatmapData);
+
+                                    // Adjust the map bounds to fit the heatmap data
+                                    if (heatmapData.length > 0) {
+                                        const bounds = L.latLngBounds(heatmapData.map(loc => [loc[0], loc[1]]));
+                                        map.fitBounds(bounds);
+                                    }
+                                }
+
+                                async function fetchSuggestions() {
+                                    const query = document.getElementById('location-input').value;
+                                    if (query.length < 2) {
+                                        document.getElementById('suggestions').style.display = 'none';
+                                        return;
+                                    }
+
+                                    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
+                                    const suggestions = await response.json();
+
+                                    const suggestionList = document.getElementById('suggestion-list');
+                                    suggestionList.innerHTML = '';
+
+                                    suggestions.forEach(suggestion => {
+                                        const li = document.createElement('li');
+                                        li.textContent = `${suggestion.display_name}`;
+                                        li.onclick = () => moveToLocation(suggestion.lat, suggestion.lon);
+                                        suggestionList.appendChild(li);
+                                    });
+
+                                    document.getElementById('suggestions').style.display = 'block';
+                                }
+
+                                function moveToLocation(lat, lng) {
+                                    map.setView([lat, lng], 14); // Move to selected location
+                                    document.getElementById('suggestions').style.display = 'none';
+                                }
+
+                                // Initialize the map
+                                window.onload = initMap;
+                            </script>
+                            <!-- <div class="col-md-4">
                                 <div class="card-body">
                                     <div class="text-center">
                                         <div class="dropdown">
@@ -255,7 +270,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

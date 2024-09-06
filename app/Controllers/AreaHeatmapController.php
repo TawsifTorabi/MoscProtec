@@ -22,7 +22,7 @@ class AreaHeatmapController extends BaseController
     //////////////////////////////////////////////Dashboard/////////////////////////////////////////////////
     public function demo(){
         $data['title'] = 'Mosquito HeatZones';
-        echo view('heatmap.php', $data);
+        echo view('includes/user/AreaHeatMap/heatmap.php', $data);
 
     }
 
