@@ -133,12 +133,11 @@
                             <div class="col-md-8">
                                 <h5 class="card-header m-0 me-2 pb-3">Mosquito Risk Zones</h5>
                                 <div class="search-container">
-                                    <input type="text" id="location-input" placeholder="Search for locations..." oninput="fetchSuggestions()">
+                                    <input type="text" id="location-input" placeholder="Search for locations...">
                                     <div id="suggestions">
                                         <ul id="suggestion-list"></ul>
                                     </div>
                                 </div>
-
                             </div>
 
                             <div id="map"></div>
@@ -240,7 +239,7 @@
                                 window.onload = initMap;
 
                                 // Attach the debounce function to the search input, delaying the fetch by 300 milliseconds
-                                document.getElementById('location-input').addEventListener('input', debounce(fetchSuggestions, 300));
+                                document.getElementById('location-input').addEventListener('input', debounce(fetchSuggestions, 400));
                             </script>
 
                             <!-- <div class="col-md-4">
