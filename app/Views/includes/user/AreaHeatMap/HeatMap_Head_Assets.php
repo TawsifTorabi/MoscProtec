@@ -36,21 +36,21 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
 <style>
-    #map {
-        height: 90vh;
-        width: 100%;
-    }
-    .search-container {
+        #map {
+            height: 90vh;
+            width: 100%;
+        }
+        .search-container {
             position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 70px;
+            left: 13%;
+            /* transform: translateX(-50%); */
             z-index: 1000;
-            background-color: white;
+            background-color: #ffffffde;
             border-radius: 5px;
             padding: 10px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            width: 300px;
+            width: 85%;
         }
         #location-input {
             width: 100%;
@@ -59,6 +59,9 @@
             border-top: none;
             border-left: none;
             border-right: none;
+        }
+        #location-input:focus{
+            outline: none;
         }
         #suggestions {
             max-height: 150px;

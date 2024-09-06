@@ -131,7 +131,7 @@
                     <div class="card">
                         <div class="row row-bordered g-0">
                             <div class="col-md-8">
-                                <h5 class="card-header m-0 me-2 pb-3">Mosquito Risk Zones Near You</h5>
+                                <h5 class="card-header m-0 me-2 pb-3">Mosquito Risk Zones</h5>
                                 <div class="search-container">
                                     <input type="text" id="location-input" placeholder="Search for locations..." oninput="fetchSuggestions()">
                                     <div id="suggestions">
@@ -211,15 +211,16 @@
                                     suggestions.forEach(suggestion => {
                                         const li = document.createElement('li');
                                         li.textContent = `${suggestion.display_name}`;
-                                        li.onclick = () => moveToLocation(suggestion.lat, suggestion.lon);
+                                        li.onclick = () => moveToLocation(suggestion.lat, suggestion.lon, suggestion.display_name);
                                         suggestionList.appendChild(li);
                                     });
 
                                     document.getElementById('suggestions').style.display = 'block';
                                 }
 
-                                function moveToLocation(lat, lng) {
+                                function moveToLocation(lat, lng, name) {
                                     map.setView([lat, lng], 14); // Move to selected location
+                                    document.getElementById('location-input').value = name;
                                     document.getElementById('suggestions').style.display = 'none';
                                 }
 
