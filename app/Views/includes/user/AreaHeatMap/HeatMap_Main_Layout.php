@@ -142,7 +142,7 @@
 
                             <div id="map"></div>
                             <script>
-                                let map, heatmapLayer;
+                                let map, heatmapLayer, marker;
                                 let debounceTimeout; // Global variable to handle the debounce timer
 
                                 async function initMap() {
@@ -167,6 +167,8 @@
                                     } else {
                                         console.log("Geolocation is not supported by this browser.");
                                     }
+
+                                    let markerLat, markerLng;
 
                                     // Create a heatmap layer
                                     heatmapLayer = L.heatLayer([], {
@@ -230,9 +232,14 @@
                                 }
 
                                 function moveToLocation(lat, lng, name) {
+                                    if(marker){map.removeLayer(marker);}
+                                    markerLat = lat; markerLng = lng;
                                     map.setView([lat, lng], 14); // Move to selected location
                                     document.getElementById('location-input').value = name;
                                     document.getElementById('suggestions').style.display = 'none';
+                                    marker = new L.marker([lat, lng]).addTo(map)
+                                    .bindPopup(name)
+                                    .openPopup();
                                 }
 
                                 // Initialize the map
