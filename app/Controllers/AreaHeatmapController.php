@@ -10,12 +10,13 @@ class AreaHeatmapController extends BaseController
         
     //////////////////////////////////////////////Dashboard/////////////////////////////////////////////////
     public function index(){
-        $data['title'] = 'Mosquito HeatZones';
+        $data['title'] = 'Mosquito HeatZones - MoscProtec';
         echo view('includes\user\AreaHeatMap\HeatMap_Header.php', $data);
         echo view('includes\user\AreaHeatMap\HeatMap_Head_Assets.php');
         echo view('includes\user\Navigation\Navigation.php');
+        echo view('includes\user\Navigation\NavigationSecond.php');
         echo view('includes\user\AreaHeatMap\HeatMap_Main_Layout.php');
-        echo view('includes\user\AreaHeatMap\HeatMap_Footer.php');
+        echo view('includes\user\Navigation\Footer.php');
 
     }
 

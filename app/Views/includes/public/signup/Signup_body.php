@@ -50,7 +50,7 @@
                         <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
 
                         <label for="inputPhone" class="sr-only">Phone Number</label>
-                        <input type="tel" id="inputPhone" class="form-control" placeholder="Phone Number" required>
+                        <input type="tel" id="inputPhone" class="form-control" placeholder="Your 11 Digit Phone Number" required>
 
                         <label for="inputDob" class="sr-only">Date of Birth</label>
                         <input type="date" id="inputDob" class="form-control" placeholder="Date of Birth" required>
@@ -136,7 +136,7 @@
                     signupButton.disabled = true;
 
                     // Send a POST request to the API using fetch
-                    fetch('<?php echo base_url('signup/process'); ?>', {
+                    fetch('<?= site_url('signup/process'); ?>', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
@@ -156,7 +156,7 @@
                     .then(data => {
                         if (data.status === 'success') {
                             showAlert('Signup successful! Redirecting...', 'success');
-                            setTimeout(() => window.location.href = '<?php echo base_url('user/getstarted'); ?>', 2000);
+                            setTimeout(() => window.location.href = '<?= site_url('user/getstarted'); ?>', 2000);
                         } else {
                             showAlert(data.message, 'danger'); // Show error message
                             signupButton.disabled = false; // Re-enable the signup button

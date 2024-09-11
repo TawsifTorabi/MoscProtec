@@ -63,7 +63,7 @@
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         // Make a request to the getRedirectAddress endpoint
-        fetch('login/getRedirectAddress')
+        fetch('<?= site_url('login/getRedirectAddress'); ?>')
             .then(response => response.json()) // Parse the JSON from the response
             .then(data => {
                 if (data.status === 'success') {
@@ -101,7 +101,7 @@
       }
 
       // Send a POST request to the API using fetch
-      fetch('<?php echo base_url('/login/process'); ?>', {
+      fetch('<?= site_url('login/process'); ?>', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/x-www-form-urlencoded'

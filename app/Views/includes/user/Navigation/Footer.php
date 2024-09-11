@@ -7,17 +7,15 @@
                 document.write(new Date().getFullYear());
             </script>
             , made with ❤️ by
-            <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
+            <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">Team Mousebreaker</a>
         </div>
         <div>
             <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
-            <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
-
+            <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">Github</a>
             <a
                 href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
                 target="_blank"
                 class="footer-link me-4">Documentation</a>
-
             <a
                 href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
                 target="_blank"
@@ -41,22 +39,22 @@
 
 <!-- Core JS -->
 <!-- build:js assets/vendor/js/core.js -->
-<script src="../assets/vendor/libs/jquery/jquery.js"></script>
-<script src="../assets/vendor/libs/popper/popper.js"></script>
-<script src="../assets/vendor/js/bootstrap.js"></script>
-<script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="<?= site_url('assets/vendor/libs/jquery/jquery.js'); ?>"></script>
+<script src="<?= site_url('assets/vendor/libs/popper/popper.js'); ?>"></script>
+<script src="<?= site_url('assets/vendor/js/bootstrap.js'); ?>"></script>
+<script src="<?= site_url('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js'); ?>"></script>
 
-<script src="../assets/vendor/js/menu.js"></script>
+<script src="<?= site_url('assets/vendor/js/menu.js'); ?>"></script>
 <!-- endbuild -->
 
 <!-- Vendors JS -->
-<script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+<script src="<?= site_url('assets/vendor/libs/apex-charts/apexcharts.js'); ?>"></script>
 
 <!-- Main JS -->
-<script src="../assets/js/main.js"></script>
+<script src="<?= site_url('assets/js/main.js'); ?>"></script>
 
 <!-- Page JS -->
-<script src="../assets/js/dashboards-analytics.js"></script>
+<script src="<?= site_url('assets/js/dashboards-analytics.js'); ?>"></script>
 
 </body>
 

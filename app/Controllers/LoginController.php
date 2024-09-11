@@ -195,7 +195,7 @@ class LoginController extends BaseController
         $validation->setRules([
             'email' => 'required|valid_email',
             'name' => 'required|min_length[3]',
-            'phone' => 'required|numeric|exact_length[10]',
+            'phone' => 'required|numeric|exact_length[11]',
             'dob' => 'required|valid_date',
             'gender' => 'required|in_list[Male,Female,Other]',
             'blood_group' => 'required|min_length[2]',
