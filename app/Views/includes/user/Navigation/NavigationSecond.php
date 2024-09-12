@@ -42,6 +42,7 @@
                                             <img src="<?= site_url('assets/img/avatars/1.png'); ?>" alt class="w-px-40 h-auto rounded-circle" />
                                         </div>
                                     </div>
+                                    <!-- http://localhost/CI/moscprotec/login/checkStatus -->
                                     <div class="flex-grow-1">
                                         <span class="fw-semibold d-block">John Doe</span>
                                         <small class="text-muted">Admin</small>

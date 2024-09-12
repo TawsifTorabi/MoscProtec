@@ -6,8 +6,7 @@ use App\Models\HeatzoneLocationModel;
 
 class AreaHeatmapController extends BaseController
 {
-        
-        
+  
     //////////////////////////////////////////////Dashboard/////////////////////////////////////////////////
     public function index(){
         $data['title'] = 'Mosquito HeatZones - MoscProtec';
