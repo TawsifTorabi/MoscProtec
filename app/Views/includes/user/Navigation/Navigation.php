@@ -6,7 +6,6 @@
                 <img src="<?= site_url('assets/img/black_logo.png'); ?>" style="width: 4em;" alt="">
             </span>
         </a>
-
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
         </a>
@@ -16,190 +15,95 @@
 
     <?php 
         $current_url = current_url(); // Get the current URL
+
+        // Define all menu items in an array
+        $menu_items = [
+            [
+                'title' => 'Dashboard',
+                'icon' => 'bx-home-circle',
+                'link' => site_url('user/dashboard'),
+                'sub_menu' => []
+            ],
+            [
+                'title' => 'Doctor Appointment',
+                'icon' => 'bx-layout',
+                'link' => 'javascript:void(0);',
+                'sub_menu' => [
+                    ['title' => 'Create Appointment', 'link' => site_url('user/medical/appointment/create')],
+                    ['title' => 'Prescription History', 'link' => site_url('user/medical/prescription/history')],
+                    ['title' => 'Appointment History', 'link' => site_url('user/medical/appointment/history')],
+                ]
+            ],
+            [
+                'title' => 'Disease Mapping',
+                'icon' => 'bx-layout',
+                'link' => 'javascript:void(0);',
+                'sub_menu' => [
+                    ['title' => 'Local Heatmap', 'link' => site_url('user/heatmap')],
+                    ['title' => 'Report Infection', 'link' => site_url('user/heatmap/report')],
+                    ['title' => 'Your Reports', 'link' => site_url('user/heatmap/myreports')],
+                ]
+            ],
+            [
+                'title' => 'Blood Donation',
+                'icon' => 'bx-copy',
+                'link' => 'javascript:void(0);',
+                'sub_menu' => [
+                    ['title' => 'Request Donation', 'link' => site_url('user/bloodbank/request')],
+                    ['title' => 'List as Donor', 'link' => site_url('user/bloodbank/register')],
+                    ['title' => 'Nearby Requests', 'link' => site_url('user/bloodbank/requests')],
+                    ['title' => 'Nearby Donors', 'link' => site_url('user/bloodbank/doners')],
+                    ['title' => 'Bloodbank Settings', 'link' => site_url('user/bloodbank/settings')],
+                ]
+            ],
+            [
+                'title' => 'Mosquito Identification',
+                'icon' => 'bx-copy',
+                'link' => 'javascript:void(0);',
+                'sub_menu' => [
+                    ['title' => 'Image Classification', 'link' => site_url('user/ai/classifier')],
+                    ['title' => 'Classification History', 'link' => site_url('user/ai/history')],
+                    ['title' => 'Queue', 'link' => site_url('user/ai/queue')],
+                ]
+            ],
+            [
+                'title' => 'Account Settings',
+                'icon' => 'bx-dock-top',
+                'link' => 'javascript:void(0);',
+                'sub_menu' => [
+                    ['title' => 'Account Details', 'link' => site_url('user/settings')],
+                    ['title' => 'Edit Account', 'link' => site_url('user/settings/edit')],
+                    ['title' => 'Logout', 'link' => site_url('user/logout')],
+                ]
+            ]
+        ];
+
+        // Function to render menu items
+        function render_menu($items, $current_url) {
+            foreach ($items as $item) {
+                $is_active = in_array($current_url, array_column($item['sub_menu'], 'link')) ? 'active open' : '';
+                echo '<li class="menu-item ' . (empty($item['sub_menu']) && $current_url == $item['link'] ? 'active' : $is_active) . '">';
+                echo '<a href="' . $item['link'] . '" class="menu-link ' . (empty($item['sub_menu']) ? '' : 'menu-toggle') . '">';
+                echo '<i class="menu-icon tf-icons bx ' . $item['icon'] . '"></i>';
+                echo '<div data-i18n="' . $item['title'] . '">' . $item['title'] . '</div>';
+                echo '</a>';
+                if (!empty($item['sub_menu'])) {
+                    echo '<ul class="menu-sub">';
+                    foreach ($item['sub_menu'] as $sub_item) {
+                        $sub_active = $current_url == $sub_item['link'] ? 'active' : '';
+                        echo '<li class="menu-item ' . $sub_active . '">';
+                        echo '<a href="' . $sub_item['link'] . '" class="menu-link">';
+                        echo '<div data-i18n="' . $sub_item['title'] . '">' . $sub_item['title'] . '</div>';
+                        echo '</a></li>';
+                    }
+                    echo '</ul>';
+                }
+                echo '</li>';
+            }
+        }
     ?>
 
     <ul class="menu-inner py-1">
-        <!-- Dashboard -->
-        <li class="menu-item <?= ($current_url == site_url('user/dashboard')) ? 'active' : ''; ?>">
-            <a href="<?= site_url('user/dashboard') ?>" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                <div data-i18n="Analytics">Dashboard</div>
-            </a>
-        </li>
-
-        <!-- Appointment -->
-        <?php
-            $appointment_active = in_array($current_url, [
-                site_url('user/medical/appointment/create'), 
-                site_url('user/medical/prescription/history'), 
-                site_url('user/medical/appointment/history')
-            ]) ? 'active open' : '';
-        ?>
-        <li class="menu-item <?= $appointment_active; ?>">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-layout"></i>
-                <div data-i18n="Layouts">Doctor Appointment</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item <?= ($current_url == site_url('user/medical/appointment/create')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/medical/appointment/create') ?>" class="menu-link">
-                        <div data-i18n="Without menu">Create Appointment</div>
-                    </a>
-                </li>
-                <li class="menu-item <?= ($current_url == site_url('user/medical/prescription/history')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/medical/prescription/history') ?>" class="menu-link">
-                        <div data-i18n="Without navbar">Prescription History</div>
-                    </a>
-                </li>
-                <li class="menu-item <?= ($current_url == site_url('user/medical/appointment/history')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/medical/appointment/history') ?>" class="menu-link">
-                        <div data-i18n="Container">Appointment History</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <!-- Disease Mapping -->
-        <?php
-            $disease_mapping_active = in_array($current_url, [
-                site_url('user/heatmap'), 
-                site_url('user/heatmap/report'), 
-                site_url('user/heatmap/myreports')
-            ]) ? 'active open' : '';
-        ?>
-        <li class="menu-item <?= $disease_mapping_active; ?>">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-layout"></i>
-                <div data-i18n="Layouts">Disease Mapping</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item <?= ($current_url == site_url('user/heatmap')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/heatmap') ?>" class="menu-link">
-                        <div data-i18n="Without menu">Local Heatmap</div>
-                    </a>
-                </li>
-                <li class="menu-item <?= ($current_url == site_url('user/heatmap/report')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/heatmap/report') ?>" class="menu-link">
-                        <div data-i18n="Without navbar">Report Infection</div>
-                    </a>
-                </li>
-                <li class="menu-item <?= ($current_url == site_url('user/heatmap/myreports')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/heatmap/myreports') ?>" class="menu-link">
-                        <div data-i18n="Container">Your Reports</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <!-- Blood Donation -->
-        <?php
-            $blood_donation_active = in_array($current_url, [
-                site_url('user/bloodbank/request'), 
-                site_url('user/bloodbank/register'), 
-                site_url('user/bloodbank/requests'), 
-                site_url('user/bloodbank/doners'), 
-                site_url('user/bloodbank/settings')
-            ]) ? 'active open' : '';
-        ?>
-        <li class="menu-item <?= $blood_donation_active; ?>">
-            <a href="javascript:void(0)" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-copy"></i>
-                <div data-i18n="Extended UI">Blood Donation</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item <?= ($current_url == site_url('user/bloodbank/request')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/bloodbank/request') ?>" class="menu-link">
-                        <div data-i18n="Perfect Scrollbar">Request Donation</div>
-                    </a>
-                </li>
-                <li class="menu-item <?= ($current_url == site_url('user/bloodbank/register')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/bloodbank/register') ?>" class="menu-link">
-                        <div data-i18n="Text Divider">List as Doner</div>
-                    </a>
-                </li>
-                <li class="menu-item <?= ($current_url == site_url('user/bloodbank/requests')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/bloodbank/requests') ?>" class="menu-link">
-                        <div data-i18n="Text Divider">Nearby Requests</div>
-                    </a>
-                </li>
-                <li class="menu-item <?= ($current_url == site_url('user/bloodbank/doners')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/bloodbank/doners') ?>" class="menu-link">
-                        <div data-i18n="Text Divider">Nearby Doners</div>
-                    </a>
-                </li>
-                <li class="menu-item <?= ($current_url == site_url('user/bloodbank/settings')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/bloodbank/settings') ?>" class="menu-link">
-                        <div data-i18n="Text Divider">Bloodbank Settings</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <!-- Mosquito Identification -->
-        <?php
-            $mosquito_id_active = in_array($current_url, [
-                site_url('user/ai/classifier'), 
-                site_url('user/ai/history'), 
-                site_url('user/ai/queue')
-            ]) ? 'active open' : '';
-        ?>
-        <li class="menu-item <?= $mosquito_id_active; ?>">
-            <a href="javascript:void(0)" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-copy"></i>
-                <div data-i18n="Extended UI">Mosquito Identification</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item <?= ($current_url == site_url('user/ai/classifier')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/ai/classifier') ?>" class="menu-link">
-                        <div data-i18n="Perfect Scrollbar">Image Classification</div>
-                    </a>
-                </li>
-                <li class="menu-item <?= ($current_url == site_url('user/ai/history')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/ai/history') ?>" class="menu-link">
-                        <div data-i18n="Text Divider">Classification History</div>
-                    </a>
-                </li>
-                <li class="menu-item <?= ($current_url == site_url('user/ai/queue')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/ai/queue') ?>" class="menu-link">
-                        <div data-i18n="Text Divider">Queue</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <!-- Your Account -->
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Your Account</span>
-        </li>
-        <?php
-            $account_settings_active = in_array($current_url, [
-                site_url('user/settings'), 
-                site_url('user/settings/edit'), 
-                site_url('user/logout')
-            ]) ? 'active open' : '';
-        ?>
-        <li class="menu-item <?= $account_settings_active; ?>">
-            <a href="javascript:void(0)" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">Account Settings</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item <?= ($current_url == site_url('user/settings')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/settings') ?>" class="menu-link">
-                        <div data-i18n="Account">Account Details</div>
-                    </a>
-                </li>
-                <li class="menu-item <?= ($current_url == site_url('user/settings/edit')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/settings/edit') ?>" class="menu-link">
-                        <div data-i18n="Notifications">Edit Account</div>
-                    </a>
-                </li>
-                <li class="menu-item <?= ($current_url == site_url('user/logout')) ? 'active' : ''; ?>">
-                    <a href="<?= site_url('user/logout') ?>" class="menu-link">
-                        <div data-i18n="Connections">Logout</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        <?php render_menu($menu_items, $current_url); ?>
     </ul>
 </aside>
