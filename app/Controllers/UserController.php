@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\UserModel;
+use App\Controllers\LoginController;
 
 class UserController extends BaseController
 {

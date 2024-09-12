@@ -21,6 +21,15 @@ use Psr\Log\LoggerInterface;
  */
 abstract class BaseController extends Controller
 {
+    
+    // Common method to check user authentication
+    protected function isAuthenticated()
+    {
+        $loginController = new LoginController();
+        return $loginController->checkSessionValidity();
+    }
+    
+    
     /**
      * Instance of the main Request object.
      *
