@@ -20,15 +20,7 @@ use Psr\Log\LoggerInterface;
  * For security be sure to declare any new methods as protected or private.
  */
 abstract class BaseController extends Controller
-{
-    
-    // Common method to check user authentication
-    protected function isAuthenticated()
-    {
-        $loginController = new LoginController();
-        return $loginController->checkSessionValidity();
-    }
-    
+{  
     
     /**
      * Instance of the main Request object.
@@ -64,4 +56,13 @@ abstract class BaseController extends Controller
 
         // E.g.: $this->session = \Config\Services::session();
     }
+
+
+    // Common method to check user authentication
+    protected function isAuthenticated()
+    {
+        $loginController = new LoginController();
+        return $loginController->checkSessionValidity();
+    }
+    
 }

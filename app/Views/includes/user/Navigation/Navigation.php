@@ -25,6 +25,12 @@
                 'sub_menu' => []
             ],
             [
+                'title' => 'Messenger',
+                'icon' => 'bx-home-circle',
+                'link' => site_url('user/messenger'),
+                'sub_menu' => []
+            ],
+            [
                 'title' => 'Doctor Appointment',
                 'icon' => 'bx-layout',
                 'link' => 'javascript:void(0);',

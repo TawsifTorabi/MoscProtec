@@ -53,7 +53,7 @@
     <div class="error-container">
         <h1 class="error-header">Access Denied</h1>
         <p class="error-message"><?= esc($message) ?></p>
-        <a href="/" class="btn-home">Go to MoscProtec Homepage</a>
+        <a href="<?= site_url('/'); ?>" class="btn-home">Go to MoscProtec Homepage</a>
     </div>
 </body>
 </html>

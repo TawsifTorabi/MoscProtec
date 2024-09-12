@@ -43,8 +43,8 @@
                                     </div>
                                     <!-- http://localhost/CI/moscprotec/login/checkStatus -->
                                     <div class="flex-grow-1">
-                                        <span class="fw-semibold d-block">John Doe</span>
-                                        <small class="text-muted">Admin</small>
+                                        <span class="fw-semibold d-block">Loading...</span>
+                                        <small class="text-muted">Loading...</small>
                                     </div>
                                 </div>
                             </a>
@@ -86,6 +86,37 @@
                 </li>
                 <!--/ User -->
             </ul>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Fetch the user status from the server
+                    fetch('<?= site_url("/login/checkStatus"); ?>')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Check if the user is logged in
+                            if (data.status === "success") {
+                                // Select the elements to update
+                                const userNameElement = document.querySelector('.dropdown-menu .fw-semibold');
+                                const userTypeElement = document.querySelector('.dropdown-menu .text-muted');
+
+                                // Update the dropdown menu with user data
+                                if (userNameElement && userTypeElement) {
+                                    userNameElement.textContent = data.data.name;
+                                    userTypeElement.textContent = data.usertype.charAt(0).toUpperCase() + data.usertype.slice(1);
+                                }
+
+                                // Show other menu items if needed or update them dynamically
+                            } else {
+                                // Redirect to the login page if not authenticated
+                                window.location.href = '<?= site_url("/login"); ?>';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching user status:', error);
+                            // Handle errors, such as displaying a message to the user or showing a notification
+                        });
+                });
+            </script>
+
         </div>
     </nav>
 

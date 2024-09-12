@@ -7,14 +7,14 @@ use App\Models\HeatzoneLocationModel;
 
 class AreaHeatmapController extends BaseController
 {
-    //////////////////////////////////////////////Dashboard/////////////////////////////////////////////////
+    //////////////////////////////////////////////Heatmap Dashboard/////////////////////////////////////////////////
     public function index()
     {
         $data['title'] = 'Mosquito HeatZones - MoscProtec';
 
         // Check if the user is logged in
         if ($this->isAuthenticated()) {
-            echo view('includes\user\AreaHeatMap\HeatMap_Header.php');
+            echo view('includes\user\AreaHeatMap\HeatMap_Header.php', $data);
             echo view('includes\user\AreaHeatMap\HeatMap_Head_Assets.php');
             echo view('includes\user\Navigation\Navigation.php');
             echo view('includes\user\Navigation\NavigationSecond.php');
@@ -30,12 +30,6 @@ class AreaHeatmapController extends BaseController
         }
     }
 
-    //////////////////////////////////////////////Demo/////////////////////////////////////////////////
-    public function demo()
-    {
-        $data['title'] = 'Mosquito HeatZones';
-        echo view('includes/user/AreaHeatMap/heatmap.php', $data);
-    }
 
     // Get Heatzone Locations
     public function getLocations()
