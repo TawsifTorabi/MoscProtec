@@ -27,8 +27,7 @@ $routes->get('/user/manageSessions', 'UserController::manageSessions');         
 $routes->get('/user/invalidateSession/(:any)', 'UserController::invalidateSession/$1'); //Logout of other device
 
 //User Onboarding Pages (For New Users)
-$routes->get('/user/getstarted', 'UserController::GetStarted');                         
-$routes->get('/user/onboard', 'UserController::onboardRedirect');
+$routes->get('/user/getstarted', 'UserController::UserGetStarted');                         //Welcome New User                                          
 $routes->get('/user/uploadphoto', 'UserController::UploadProfilePhoto');
 $routes->get('/user/dashboard', 'AreaHeatmapController::index');
 //$routes->get('/user/dashboard', 'UserController::Dashboard');

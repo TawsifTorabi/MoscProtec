@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\UserModel;
 use CodeIgniter\Controller;
 
@@ -40,13 +41,13 @@ class LoginController extends BaseController
     {
         // Start session
         $session = session();
-        
+
         // Check if the user is logged in
         if ($this->checkSessionValidity()) {
             // Load User model
             $userModel = new UserModel();
             $user = $userModel->find($session->get('user_id'));
-            
+
             if ($user) {
                 // Determine the redirect URL based on user type
                 $redirectUrl = ($user['usertype'] === 'admin') ? 'admin/dashboard' : 'user/dashboard';
@@ -235,12 +236,34 @@ class LoginController extends BaseController
         ]);
 
         if ($userId) {
-            $session->set([
-                'user_id' => $userId,
-                'usertype' => 'general',
-                'isLoggedIn' => true
-            ]);
+            // Log the user in after registration
+            $user = $userModel->where('email', $email)->first();
 
+            if ($user && password_verify($password, $user['password'])) {
+                $sessionId = session_id();
+                $userAgent = $this->request->getUserAgent();
+                $ipAddress = $this->request->getIPAddress();
+
+                $db = \Config\Database::connect();
+                $db->table('user_sessions')->insert([
+                    'user_id' => $user['id'],
+                    'session_id' => $sessionId,
+                    'user_agent' => $userAgent,
+                    'ip_address' => $ipAddress,
+                    'is_valid' => 1,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'last_activity' => date('Y-m-d H:i:s')
+                ]);
+
+                $session->set([
+                    'user_id' => $user['id'],
+                    'session_id' => $sessionId,
+                    'usertype' => $user['usertype'],
+                    'isLoggedIn' => true
+                ]);
+            }
+
+            // After logging in, return the specific JSON response
             $redirectUrl = base_url('user/getstarted');
             return $this->response->setJSON(['status' => 'success', 'message' => 'User registered successfully', 'redirect_url' => $redirectUrl]);
         } else {

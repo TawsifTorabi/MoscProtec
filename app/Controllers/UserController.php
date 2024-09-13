@@ -71,32 +71,31 @@ class UserController extends BaseController
 
 
        
-        //////////////////////////////////////////////Direct User to Designated Dashboard/////////////////////////////////////////
-        public function onboardRedirect()
+        //////////////////////////////////////////////Direct New User to Welcome Page/////////////////////////////////////////
+        public function UserGetStarted()
         {
-            // Start session
-            $session = session();
-            
+            $data['title'] = 'User Onboarding - MoscProtec';
+
             // Check if the user is logged in
-            if ($session->get('isLoggedIn')) {
-                // Load User model
-                $userModel = new UserModel();
-                $user = $userModel->find($session->get('user_id'));
-    
-                if ($user) {
-                    // If not logged in or user not found, show the login page
-                    echo view('includes/public/getstarted/getstarted_header.php');
-                    echo view('includes/public/getstarted/getstarted_body.php');
-                    //echo view('includes/public/footer.php');
-                    echo view('includes/public/body_static_inc.php');
-                }
+            if ($this->isAuthenticated()) {
+                // If not logged in or user not found, show the login page
+                echo view('includes/public/getstarted/getstarted_header.php');
+                echo view('includes/public/getstarted/getstarted_nav.php');
+                echo view('includes/public/getstarted/getstarted_body.php');
+                echo view('includes/public/body_static_inc.php');
+            } else {
+                // Initialize data array for error
+                $data_error = [
+                    'title' => $data['title'],  // Use the same title from $data
+                    'message' => 'You are not authenticated to view this page.'
+                ];
+                echo view('errors\html\not_authorized.php', $data_error);
             }
-            
-            return redirect()->to('/login');
         }
        
 
         //////////////////////////////////////////////Dashboard//////////////////////////////////////////////////////////////////
+
         public function Dashboard(){
             echo "Demo Dashboard";
         }
