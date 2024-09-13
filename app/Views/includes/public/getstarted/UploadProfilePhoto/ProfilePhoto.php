@@ -47,10 +47,10 @@
               }
 
               .label_btn {
-                  position: relative;
-                  color: #979797;
-                  padding: 20px 48px;
-                  border-radius: 46px;
+                position: relative;
+                color: #979797;
+                padding: 20px 48px;
+                border-radius: 46px;
               }
             </style>
 
@@ -67,11 +67,8 @@
                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
               </div>
               <div class="alert" role="alert"></div>
-              <button class="btn btn-lg btn-success btn-block" onclick="" disabled>Get Started</a>
+              <a class="btn btn-lg btn-warning btn-block" href="<?= site_url('/user/onboard'); ?>">I'll upload later</a>
             </div>
-
-
-
           </div>
         </div>
       </div>
@@ -92,6 +89,32 @@
         <div class="modal-body">
           <div class="img-container">
             <img id="image" src="<?= site_url('/assets/img/placeholder_square.jpeg'); ?>">
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                // Fetch the user status from the server
+                fetch('<?= site_url('/login/checkStatus'); ?>')
+                  .then(response => response.json())
+                  .then(data => {
+                    // Check if the user is logged in
+                    if (data.status === "success") {
+                      // Select the elements to update
+                      const userNameElement = document.getElementById('image');
+                      // Set the Name
+                      if (userNameElement) {
+                        userNameElement.src = "<?= site_url('/writable/uploads/'); ?>" + data.data.profilepic;
+                      }
+                      // Show other menu items if needed or update them dynamically
+                    } else {
+                      // Redirect to the login page if not authenticated
+                      //window.location.href = 'http://localhost/CI/moscprotec/login';
+                    }
+                  })
+                  .catch(error => {
+                    console.error('Error fetching user status:', error);
+                    // Handle errors, such as displaying a message to the user or showing a notification
+                  });
+              });
+            </script>
           </div>
         </div>
         <div class="modal-footer">
@@ -104,6 +127,7 @@
 </div>
 
 <script src="<?= site_url('/assets/dist/js/bootstrap.bundle.min.js'); ?>" crossorigin="anonymous"></script>
+
 <script>
   window.addEventListener('DOMContentLoaded', function() {
     var avatar = document.getElementById('avatar');
@@ -115,26 +139,29 @@
     var $modal = $('#modal');
     var cropper;
 
+    // Initialize Bootstrap tooltip
     $('[data-toggle="tooltip"]').tooltip();
 
+    // Handle file input change
     input.addEventListener('change', function(e) {
       var files = e.target.files;
       var done = function(url) {
-        input.value = '';
+        input.value = ''; // Clear input value
         image.src = url;
         $alert.hide();
         $modal.modal('show');
       };
       var reader;
       var file;
-      var url;
 
+      // Check if files were selected
       if (files && files.length > 0) {
         file = files[0];
 
+        // Use URL API to create an object URL if supported
         if (URL) {
           done(URL.createObjectURL(file));
-        } else if (FileReader) {
+        } else if (FileReader) { // Fallback for older browsers
           reader = new FileReader();
           reader.onload = function(e) {
             done(reader.result);
@@ -144,36 +171,45 @@
       }
     });
 
+    // Initialize the cropper when modal is shown
     $modal.on('shown.bs.modal', function() {
       cropper = new Cropper(image, {
         aspectRatio: 1,
         viewMode: 3,
       });
     }).on('hidden.bs.modal', function() {
+      // Destroy cropper instance when modal is hidden
       cropper.destroy();
       cropper = null;
     });
 
+    // Handle crop button click
     document.getElementById('crop').addEventListener('click', function() {
       var initialAvatarURL;
       var canvas;
 
-      $modal.modal('hide');
+      $modal.modal('hide'); // Hide modal
 
+      // Check if cropper is initialized
       if (cropper) {
         canvas = cropper.getCroppedCanvas({
           width: 160,
           height: 160,
         });
-        initialAvatarURL = avatar.src;
-        avatar.src = canvas.toDataURL();
-        $progress.show();
-        $alert.removeClass('alert-success alert-warning');
+        initialAvatarURL = avatar.src; // Store initial avatar URL
+        avatar.src = canvas.toDataURL(); // Update avatar preview
+        $progress.show(); // Show progress bar
+        $alert.removeClass('alert-success alert-warning'); // Reset alert classes
+
+        // Convert canvas to a blob and upload
         canvas.toBlob(function(blob) {
           var formData = new FormData();
 
           formData.append('avatar', blob, 'avatar.jpg');
-          $.ajax('https://jsonplaceholder.typicode.com/posts', {
+
+          // Perform AJAX request to upload image
+          $.ajax({
+            url: '<?= site_url('/profile/uploadAvatar'); ?>', // Update to match your route
             method: 'POST',
             data: formData,
             processData: false,
@@ -181,7 +217,6 @@
 
             xhr: function() {
               var xhr = new XMLHttpRequest();
-
               xhr.upload.onprogress = function(e) {
                 var percent = '0';
                 var percentage = '0%';
@@ -196,24 +231,33 @@
               return xhr;
             },
 
-            success: function() {
-              $alert.show().addClass('alert-success').text('Upload success');
+            success: function(response) {
+              if (response.status === 'success') {
+                $alert.show().addClass('alert-success').text(response.message);
+                setTimeout(function() {
+                  window.location.href = '<?= site_url('/user/onboard'); ?>';
+                }, 500);
+              } else {
+                avatar.src = initialAvatarURL; // Revert avatar preview on error
+                $alert.show().addClass('alert-warning').text(response.message);
+              }
             },
 
             error: function() {
-              avatar.src = initialAvatarURL;
+              avatar.src = initialAvatarURL; // Revert avatar preview on AJAX error
               $alert.show().addClass('alert-warning').text('Upload error');
             },
 
             complete: function() {
-              $progress.hide();
-            },
+              $progress.hide(); // Hide progress bar when complete
+            }
           });
         });
       }
     });
   });
 </script>
+
 </body>
 
 </html>

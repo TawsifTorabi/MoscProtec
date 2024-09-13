@@ -60,7 +60,8 @@ class LoginController extends BaseController
                     'redirect' => $redirectUrl,
                     'data' => [
                         'name' => $user['name'], // Assuming you have a 'name' field in your user table
-                        'username' => $user['username'] // Assuming you have a 'username' field in your user table
+                        'username' => $user['username'], // Assuming you have a 'username' field in your user table
+                        'profilepic' => $user['pp'] // Assuming you have a 'pp' field in your user table
                     ]
                 ]);
             } else {

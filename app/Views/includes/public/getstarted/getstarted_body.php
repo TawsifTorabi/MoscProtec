@@ -16,7 +16,9 @@
                 </style>
                 <div class="col-md-7 signup_form">
                   <div class="container">
-                    <h1>Welcome Onboard!</h1>
+                    <h1>Welcome Onboard! <br> 
+                        <span id="user_name"></span>
+                    </h1>
                     <p>MoscProtec is a open platform developed to help the community in breakout of Mosquito borne diseases. <br>
                       By Signing up as a member, you will be able to contribute to the society just by sharing your surrounding information with others.
                       <br>
@@ -32,3 +34,29 @@
         </div>
       </div>
     </main>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Fetch the user status from the server
+        fetch('<?= site_url("/login/checkStatus"); ?>')
+          .then(response => response.json())
+          .then(data => {
+            // Check if the user is logged in
+            if (data.status === "success") {
+              // Select the elements to update
+              const userNameElement = document.getElementById('user_name');
+              // Set the Name
+              if (userNameElement) {
+                userNameElement.textContent = data.data.name;
+              }
+              // Show other menu items if needed or update them dynamically
+            } else {
+              // Redirect to the login page if not authenticated
+              window.location.href = '<?= site_url("/login"); ?>';
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching user status:', error);
+            // Handle errors, such as displaying a message to the user or showing a notification
+          });
+      });
+    </script>

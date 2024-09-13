@@ -18,6 +18,7 @@
   <link href="<?= site_url('/assets/css/carousel.css'); ?>" rel="stylesheet">
   <link href="<?= site_url('/assets/css/login.css'); ?>" rel="stylesheet">
   <link href="<?= site_url('/assets/dist/css/cropper.min.css'); ?>" rel="stylesheet">
+  <script rel="preload" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
