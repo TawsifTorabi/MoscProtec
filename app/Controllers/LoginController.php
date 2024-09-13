@@ -187,6 +187,30 @@ class LoginController extends BaseController
         echo view('includes/public/body_static_inc.php');
     }
 
+    //Check for Username Availability
+    public function checkUsername()
+    {
+        $username = $this->request->getPost('username');
+    
+        if (!$username || strlen($username) < 4) {
+            return $this->response->setJSON(['available' => false, 'message' => 'Invalid username']);
+        }
+    
+        $userModel = new UserModel();
+        
+        // Check if the username already exists
+        $user = $userModel->where('username', $username)->first();
+    
+        if ($user) {
+            return $this->response->setJSON(['available' => false, 'message' => 'Username already taken']);
+        }
+    
+        // If the username is unique
+        return $this->response->setJSON(['available' => true, 'message' => 'Username available']);
+    }
+    
+
+
     //////////////////////////////////////////////Process User Sign Up////////////////////////////////////////////////////
     public function signupProcess()
     {
@@ -199,6 +223,7 @@ class LoginController extends BaseController
             'name' => 'required|min_length[3]',
             'phone' => 'required|numeric|exact_length[11]',
             'dob' => 'required|valid_date',
+            'username' => 'required',
             'gender' => 'required|in_list[Male,Female,Other]',
             'blood_group' => 'required|min_length[2]',
             'password' => 'required|min_length[6]',
@@ -209,6 +234,7 @@ class LoginController extends BaseController
         $name = $this->request->getVar('name');
         $phone = $this->request->getVar('phone');
         $dob = $this->request->getVar('dob');
+        $username = $this->request->getVar('username');
         $gender = $this->request->getVar('gender');
         $bloodGroup = $this->request->getVar('blood_group');
         $password = $this->request->getVar('password');
@@ -223,6 +249,10 @@ class LoginController extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'Email already exists.']);
         }
 
+        if ($userModel->where('username', $username)->first()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Username already exists.']);
+        }
+
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
         $userId = $userModel->insert([
@@ -230,6 +260,7 @@ class LoginController extends BaseController
             'name' => $name,
             'phone' => $phone,
             'dob' => $dob,
+            'username' => $username,
             'gender' => $gender,
             'blood_group' => $bloodGroup,
             'password' => $hashedPassword,

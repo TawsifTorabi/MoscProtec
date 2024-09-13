@@ -59,7 +59,7 @@
               <h1 class="h3 mb-3 font-weight-normal">Upload Your Profile Photo</h1>
               <p>Upload a Avatar or a photo.</p>
               <label class="label imageLabel" data-toggle="tooltip" title="Change your avatar">
-                <img class="rounded" id="avatar" width="200" src="<?= site_url('/assets/img/placeholder_square.jpeg'); ?>" alt="avatar">
+                <img class="rounded" id="avatar" width="200" src="<?= site_url('/global/photos/currentUser'); ?>" alt="avatar">
                 <span class="label_btn">Upload Image (.jpg, .png, .gif)</span>
                 <input type="file" class="sr-only" id="input" name="image" accept="image/*">
               </label>
@@ -88,33 +88,7 @@
         </div>
         <div class="modal-body">
           <div class="img-container">
-            <img id="image" src="<?= site_url('/assets/img/placeholder_square.jpeg'); ?>">
-            <script>
-              document.addEventListener('DOMContentLoaded', function() {
-                // Fetch the user status from the server
-                fetch('<?= site_url('/login/checkStatus'); ?>')
-                  .then(response => response.json())
-                  .then(data => {
-                    // Check if the user is logged in
-                    if (data.status === "success") {
-                      // Select the elements to update
-                      const userNameElement = document.getElementById('image');
-                      // Set the Name
-                      if (userNameElement) {
-                        userNameElement.src = "<?= site_url('/writable/uploads/'); ?>" + data.data.profilepic;
-                      }
-                      // Show other menu items if needed or update them dynamically
-                    } else {
-                      // Redirect to the login page if not authenticated
-                      //window.location.href = 'http://localhost/CI/moscprotec/login';
-                    }
-                  })
-                  .catch(error => {
-                    console.error('Error fetching user status:', error);
-                    // Handle errors, such as displaying a message to the user or showing a notification
-                  });
-              });
-            </script>
+            <img id="image" src="<?= site_url('/global/photos/currentUser'); ?>">
           </div>
         </div>
         <div class="modal-footer">
