@@ -7,5 +7,6 @@
 <script src="<?= site_url('assets/dist/js/bootstrap.min.js');?>"></script>
 <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
 <script src="<?= site_url('assets/js/vendor/holder.min.js');?>"></script>
+<script src="<?= site_url('assets/dist/js/cropper.min.js');?>"></script>
 </body>
 </html>

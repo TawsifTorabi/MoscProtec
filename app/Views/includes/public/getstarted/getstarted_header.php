@@ -8,7 +8,7 @@
   <meta name="author" content="">
   <link rel="icon" href="<?= site_url('assets/favicon.ico'); ?>">
 
-  <title>Get Started - Mosc Protec</title>
+  <title><?= esc($title) ?></title>
 
   <!-- Bootstrap core CSS -->
   <link href="<?= site_url('/assets/dist/css/bootstrap.min.css'); ?>" rel="stylesheet">

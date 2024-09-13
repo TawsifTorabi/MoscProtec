@@ -1,0 +1,46 @@
+# Ignore all files in writable and cache directories
+writable/*
+!writable/.htaccess
+
+writable/cache/*
+!writable/cache/.htaccess
+
+writable/logs/*
+!writable/logs/index.html
+
+writable/session/*
+!writable/session/index.html
+
+writable/debugbar/*
+!writable/debugbar/.gitignore
+
+# Ignore environment-specific configuration files
+.env
+.env.*
+
+# Composer vendor directory
+/vendor
+
+# IDE and editor files
+.idea/
+*.swp
+*.swo
+*.bak
+*.backup
+*.tmp
+.vscode/
+
+# PHPStorm/IntelliJ IDEA
+*.iml
+*.iws
+out/
+
+# MacOS
+.DS_Store
+
+# Node modules (if using npm)
+node_modules/
+
+# Ignore PHPStorm project files
+/.idea/
+
