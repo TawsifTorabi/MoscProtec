@@ -1,3 +1,10 @@
+<style>
+  .avatar {
+    margin-right: 0.7em;
+    margin-left: 0.5em;
+    margin-top: 0.3em;
+  }
+</style>
 <section>
   <div class="container py-5">
 
@@ -14,8 +21,9 @@
               <li class="p-2 border-bottom bg-body-tertiary">
                 <a href="#!" class="d-flex justify-content-between">
                   <div class="d-flex flex-row">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp" alt="avatar"
-                      class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                    <div class="avatar avatar-online">
+                      <img src="http://localhost/CI/moscprotec/global/photos/currentUser" alt="" class="w-px-60 h-auto rounded-circle">
+                    </div>
                     <div class="pt-1">
                       <p class="fw-bold mb-0">John Doe</p>
                       <p class="small text-muted">Hello, Are you there?</p>
@@ -30,8 +38,9 @@
               <li class="p-2 border-bottom">
                 <a href="#!" class="d-flex justify-content-between">
                   <div class="d-flex flex-row">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-1.webp" alt="avatar"
-                      class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                    <div class="avatar avatar-online">
+                      <img src="http://localhost/CI/moscprotec/global/photos/currentUser" alt="" class="w-px-60 h-auto rounded-circle">
+                    </div>
                     <div class="pt-1">
                       <p class="fw-bold mb-0">Danny Smith</p>
                       <p class="small text-muted">Lorem ipsum dolor sit.</p>
@@ -45,8 +54,9 @@
               <li class="p-2 border-bottom">
                 <a href="#!" class="d-flex justify-content-between">
                   <div class="d-flex flex-row">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-2.webp" alt="avatar"
-                      class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                    <div class="avatar avatar-online">
+                      <img src="http://localhost/CI/moscprotec/global/photos/currentUser" alt="" class="w-px-60 h-auto rounded-circle">
+                    </div>
                     <div class="pt-1">
                       <p class="fw-bold mb-0">Alex Steward</p>
                       <p class="small text-muted">Lorem ipsum dolor sit.</p>
@@ -60,8 +70,9 @@
               <li class="p-2 border-bottom">
                 <a href="#!" class="d-flex justify-content-between">
                   <div class="d-flex flex-row">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-3.webp" alt="avatar"
-                      class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                    <div class="avatar avatar-online">
+                      <img src="http://localhost/CI/moscprotec/global/photos/currentUser" alt="" class="w-px-60 h-auto rounded-circle">
+                    </div>
                     <div class="pt-1">
                       <p class="fw-bold mb-0">Ashley Olsen</p>
                       <p class="small text-muted">Lorem ipsum dolor sit.</p>
@@ -75,8 +86,9 @@
               <li class="p-2 border-bottom">
                 <a href="#!" class="d-flex justify-content-between">
                   <div class="d-flex flex-row">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-4.webp" alt="avatar"
-                      class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                    <div class="avatar avatar-online">
+                      <img src="http://localhost/CI/moscprotec/global/photos/currentUser" alt="" class="w-px-60 h-auto rounded-circle">
+                    </div>
                     <div class="pt-1">
                       <p class="fw-bold mb-0">Kate Moss</p>
                       <p class="small text-muted">Lorem ipsum dolor sit.</p>
@@ -90,8 +102,9 @@
               <li class="p-2 border-bottom">
                 <a href="#!" class="d-flex justify-content-between">
                   <div class="d-flex flex-row">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
-                      class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                    <div class="avatar avatar-online">
+                      <img src="http://localhost/CI/moscprotec/global/photos/currentUser" alt="" class="w-px-60 h-auto rounded-circle">
+                    </div>
                     <div class="pt-1">
                       <p class="fw-bold mb-0">Lara Croft</p>
                       <p class="small text-muted">Lorem ipsum dolor sit.</p>
@@ -105,8 +118,9 @@
               <li class="p-2">
                 <a href="#!" class="d-flex justify-content-between">
                   <div class="d-flex flex-row">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
-                      class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                    <div class="avatar avatar-online">
+                      <img src="http://localhost/CI/moscprotec/global/photos/currentUser" alt="" class="w-px-60 h-auto rounded-circle">
+                    </div>
                     <div class="pt-1">
                       <p class="fw-bold mb-0">Brad Pitt</p>
                       <p class="small text-muted">Lorem ipsum dolor sit.</p>
@@ -130,8 +144,9 @@
           <div class="col-md-12 col-lg-12 col-xl-12">
             <ul class="list-unstyled">
               <li class="d-flex justify-content-between mb-4">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
-                  class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                <div class="avatar avatar-online">
+                  <img src="http://localhost/CI/moscprotec/global/photos/currentUser" alt="" class="w-px-60 h-auto rounded-circle">
+                </div>
                 <div class="card">
                   <div class="card-header d-flex justify-content-between p-3">
                     <p class="fw-bold mb-0">Brad Pitt</p>
@@ -158,8 +173,9 @@
                     </p>
                   </div>
                 </div>
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
-                  class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                <div class="avatar avatar-online">
+                  <img src="http://localhost/CI/moscprotec/global/photos/currentUser" alt="" class="w-px-60 h-auto rounded-circle">
+                </div>
               </li>
               <li class="d-flex justify-content-between mb-4">
                 <div class="card w-100">
@@ -174,12 +190,14 @@
                     </p>
                   </div>
                 </div>
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
-                  class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                <div class="avatar avatar-online">
+                  <img src="http://localhost/CI/moscprotec/global/photos/currentUser" alt="" class="w-px-60 h-auto rounded-circle">
+                </div>
               </li>
               <li class="d-flex justify-content-between mb-4">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
-                  class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                <div class="avatar avatar-online">
+                  <img src="http://localhost/CI/moscprotec/global/photos/currentUser" alt="" class="w-px-60 h-auto rounded-circle">
+                </div>
                 <div class="card">
                   <div class="card-header d-flex justify-content-between p-3">
                     <p class="fw-bold mb-0">Brad Pitt</p>
@@ -194,8 +212,9 @@
                 </div>
               </li>
               <li class="d-flex justify-content-between mb-4">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
-                  class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                <div class="avatar avatar-online">
+                  <img src="http://localhost/CI/moscprotec/global/photos/currentUser" alt="" class="w-px-60 h-auto rounded-circle">
+                </div>
                 <div class="card">
                   <div class="card-header d-flex justify-content-between p-3">
                     <p class="fw-bold mb-0">Brad Pitt</p>
@@ -214,7 +233,7 @@
         </div>
         <div class="row">
           <div class="col-md-12 col-lg-12 col-xl-12">
-            <li class="bg-white mb-3">
+            <li class="mb-3">
               <div data-mdb-input-init class="form-outline">
                 <textarea class="form-control bg-body-tertiary" id="textAreaExample2" rows="4"></textarea>
                 <label class="form-label" for="textAreaExample2">Message</label>
