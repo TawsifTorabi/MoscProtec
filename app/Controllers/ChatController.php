@@ -38,7 +38,7 @@ class ChatController extends BaseController
 
 
 
-    //Get Chat Messages
+    //Get Chat Messages from Thread
     public function getChatMessages($id_1, $id_2)
     {
         $chatModel = new ChatModel();
@@ -53,23 +53,6 @@ class ChatController extends BaseController
 
 
 
-
-    //Get User Conversations
-    public function getConversations($user_id)
-    {
-        $conversationModel = new ConversationModel();
-
-        // Fetch the conversations for the logged-in user
-        $conversations = $conversationModel->getConversation($user_id);
-
-        // Pass the data to a view or return as JSON
-        //return view('conversations_view', ['conversations' => $conversations]);
-        return $this->response->setJSON(['conversations' => $conversations]);
-    }
-
-
-
-
     //Get Last Chats
     public function getLastChat($id_1, $id_2)
     {
@@ -81,36 +64,6 @@ class ChatController extends BaseController
         // Return the last chat (you can return a view or JSON response)
         return $this->response->setJSON(['lastChat' => $lastChat]);
     }
-
-
-
-
-    //Mark Chat as Opened
-    public function markAsOpened($id_1)
-    {
-        $chatModel = new ChatModel();
-
-        // Assuming you're getting the list of chats from a POST request
-        $chats = $this->request->getVar('chats');
-
-        if ($chats) {
-            // Update the opened status of the chats
-            $chatModel->updateOpenedChats($id_1, $chats);
-
-            // Return success response as JSON
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Chats marked as opened'
-            ]);
-        } else {
-            // Return error response as JSON
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'No chats provided'
-            ]);
-        }
-    }
-
 
 
 
@@ -280,8 +233,9 @@ class ChatController extends BaseController
                     $data[] = [
                         'name' => $conversation['name'],
                         'username' => $conversation['username'],
-                        'profile_picture' => 'uploads/' . $conversation['pp'],
-                        'last_message' => $this->lastChat(session()->get('user_id'), $conversation['username']),
+                        'userid' => $conversation['id'],
+                        'profile_picture' => site_url('/global/photos/profile/') . $conversation['username'],
+                        'last_message' => $this->lastChat(session()->get('user_id'), $conversation['id']),
                         'last_seen' => $this->lastSeen($conversation['lastseen']),
                         'is_online' => $this->lastSeen($conversation['lastseen']) === 'Active'
                     ];
@@ -302,23 +256,32 @@ class ChatController extends BaseController
         $chatModel = new \App\Models\ChatModel();
         $builder = $chatModel->builder();
 
-        // Use groupStart and groupEnd to handle complex conditions
+        // Ensure we only pull messages between the two users (id_1 and id_2)
         $builder->groupStart()
+            ->groupStart()
             ->where('from_id', $id_1)
             ->where('to_id', $id_2)
             ->groupEnd()
-            ->groupStart()
-            ->where('to_id', $id_1)
+            ->orGroupStart()
             ->where('from_id', $id_2)
+            ->where('to_id', $id_1)
             ->groupEnd()
-            ->orderBy('chat_id', 'DESC')
-            ->limit(1);
+            ->groupEnd()
+            ->orderBy('chat_id', 'DESC') // Get the most recent message
+            ->limit(1); // Limit to one result
 
-        // Execute the query and fetch the result
+        // Fetch the result
         $lastChat = $builder->get()->getRowArray();
 
+        // Debugging the result to verify the query
+        //print_r($lastChat);
+
+        // Return the message content or an empty string if none exists
         return $lastChat ? htmlspecialchars($lastChat['message'], ENT_QUOTES) : '';
     }
+
+
+
 
 
 

@@ -34,7 +34,7 @@ class ConversationModel extends Model
             'user_2' => $to_id,
         ]);
     }
-    
+
 
 
     public function getConversations($user_id)
@@ -54,9 +54,9 @@ class ConversationModel extends Model
             foreach ($conversations as $conversation) {
                 $other_user_id = ($conversation['user_1'] == $user_id) ? $conversation['user_2'] : $conversation['user_1'];
 
-                // Fetch user details from the 'users' table
+                // Fetch user details from the 'users' table, including 'id'
                 $userBuilder = $this->db->table('user');
-                $userBuilder->select('name, username, pp, lastseen');
+                $userBuilder->select('id, name, username, pp, lastseen');
                 $user = $userBuilder->where('id', $other_user_id)->get()->getRowArray();
 
                 // Push the user data into the array
