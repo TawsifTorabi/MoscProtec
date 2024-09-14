@@ -30,6 +30,9 @@ class ChatModel extends Model
         return ($query->getNumRows() > 0) ? $query->getResultArray() : [];
     }
 
+
+    
+
     public function getLastChat($id_1, $id_2)
     {
         // Query to fetch the last chat between two users
@@ -91,16 +94,24 @@ class ChatModel extends Model
 
 
 
-
-    // Method to get chats and update the 'opened' status
     public function getChatsAndMarkOpened($id_1, $id_2)
     {
-        // Fetch chats where the current user is the recipient
-        $this->where('from_id', $id_1);
-        $this->where('to_id', $id_2);
+        // Fetch chats where either user can be the sender or recipient
+        $this->groupStart()
+            ->where('from_id', $id_1)
+            ->where('to_id', $id_2)
+        ->groupEnd()
+        ->orGroupStart()
+            ->where('from_id', $id_2)
+            ->where('to_id', $id_1)
+        ->groupEnd();
+        
+        // Order by chat ID in ascending order
         $this->orderBy('chat_id', 'ASC');
+        
+        // Fetch the chats
         $chats = $this->findAll();
-
+    
         // Mark unread chats as opened
         foreach ($chats as &$chat) {
             if ($chat['opened'] == 0) {
@@ -108,9 +119,10 @@ class ChatModel extends Model
                 $this->update($chat['chat_id'], ['opened' => 1]);
             }
         }
-
+    
         return $chats;
     }
+    
 
 }
 

@@ -134,7 +134,8 @@ class ChatController extends BaseController
             foreach ($chats as $chat) {
                 $response[] = [
                     'message' => htmlspecialchars($chat['message'], ENT_QUOTES),
-                    'created_at' => date("l, jS \of F, Y", $chat['created_at'])
+                    'sender' => $chat['from_id'],
+                    'created_at' => date("h:i A, jS F, Y", $chat['created_at'])
                 ];
             }
 
