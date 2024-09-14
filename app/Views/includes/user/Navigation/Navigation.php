@@ -26,7 +26,7 @@
             ],
             [
                 'title' => 'Messenger',
-                'icon' => 'bx-home-circle',
+                'icon' => 'bxs-chat',
                 'link' => site_url('user/messenger'),
                 'sub_menu' => []
             ],

@@ -149,7 +149,7 @@
     $modal.on('shown.bs.modal', function() {
       cropper = new Cropper(image, {
         aspectRatio: 1,
-        viewMode: 3,
+        viewMode: 1,
       });
     }).on('hidden.bs.modal', function() {
       // Destroy cropper instance when modal is hidden
@@ -167,8 +167,8 @@
       // Check if cropper is initialized
       if (cropper) {
         canvas = cropper.getCroppedCanvas({
-          width: 160,
-          height: 160,
+          width: 260,
+          height: 260,
         });
         initialAvatarURL = avatar.src; // Store initial avatar URL
         avatar.src = canvas.toDataURL(); // Update avatar preview

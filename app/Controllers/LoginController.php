@@ -143,6 +143,7 @@ class LoginController extends BaseController
                 'user_id' => $user['id'],
                 'session_id' => $sessionId,
                 'usertype' => $user['usertype'],
+                'username' => $user['username'],
                 'isLoggedIn' => true
             ]);
 

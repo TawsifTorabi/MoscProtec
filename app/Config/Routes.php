@@ -54,3 +54,18 @@ $routes->get('/user/heatmap/getLocations', 'AreaHeatmapController::getLocations'
 
 
 
+//Messenger
+$routes->get('/user/messenger', 'ChatController::chatIndex');                              //Chat Landing
+
+//Issue APIs
+$routes->get('/conversations', 'ChatController::Conversation');                            //Convesation
+$routes->get('/chats/(:num)/(:num)', 'ChatController::getChatMessages/$1/$2');             //Get Chats
+$routes->get('/conversations/(:num)', 'ChatController::getConversations/$1');              //Get Conversations
+$routes->get('/last-chat/(:num)/(:num)', 'ChatController::getLastChat/$1/$2');             //Get Last Chats
+$routes->post('/chats/opened/(:num)', 'ChatController::markAsOpened/$1');                  //Mark Chat as Opened
+
+//Fixed APIs
+$routes->post('/user/messenger/get-chats', 'ChatController::getChats');                    //Get All Messages from current user to defined user (get-chats?id_2=DESTINATION_USER_ID)
+$routes->post('/user/messenger/send-message', 'ChatController::sendMessage');              //Sends Message (to_id=USER_ID&message=STRING)
+$routes->post('/user/messenger/search', 'ChatController::search');                         //Search By Username or Name (Returns JSON list)
+$routes->post('/user/messenger/update-last-seen', 'UserController::updateLastSeen');       //Current Update User Last Seen (Returns JSON list)

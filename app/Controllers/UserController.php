@@ -69,7 +69,36 @@ class UserController extends BaseController
 
 
 
+    public function updateLastSeen()
+    {
+        // Check if the user is logged in
+        if (session()->has('username')) {
+            // Load the database library
+            $db = \Config\Database::connect();
 
+            // Get the logged-in user's ID from the session
+            $userId = session()->get('userid');
+
+            // Get current time
+            $time = time();
+
+            // Update the last_seen time
+            $builder = $db->table('user');
+            $builder->set('lastseen', $time);
+            $builder->where('id', $userId);
+            $success = $builder->update();
+
+            // Return JSON response
+            if ($success) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Last seen time updated']);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update last seen time'], 500);
+            }
+
+        } else {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+    }
 
 
     //////////////////////////////////////////////Direct New User to Welcome Page/////////////////////////////////////////

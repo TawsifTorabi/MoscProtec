@@ -45,6 +45,11 @@ class ProfileController extends Controller
         return $this->serveImage($filePath);
     }
 
+
+
+
+
+
     // Method to serve the profile photo of the currently logged-in user
     public function serveCurrentUserPhoto()
     {
@@ -104,7 +109,7 @@ class ProfileController extends Controller
 
 
 
-
+    //Upload User Photo
     public function uploadAvatar()
     {
         // Start session
@@ -147,9 +152,14 @@ class ProfileController extends Controller
         return $this->response->setJSON(['status' => 'error', 'message' => 'User not found']);
     }
 
+
+
+
+    //Session Validator
     private function checkSessionValidity()
     {
         $session = session();
         return $session->get('user_id') !== null;
     }
+    
 }
