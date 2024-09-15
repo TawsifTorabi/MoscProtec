@@ -29,9 +29,20 @@
       </div>
 
       <div class="col-md-12 col-lg-12 col-xl-8">
-        <div class="row" style="max-height: 34em; overflow-y: scroll;">
-          <div class="col-md-12 col-lg-12 col-xl-12">
 
+        <div class="d-flex flex-row">
+          <div class="avatar">
+            <img id="userImage" src="" class="w-px-60 h-auto rounded-circle">
+          </div>
+          <div class="pt-1">
+            <p class="fw-bold mb-0">
+            <h3 id="userNameTitle">Loading...</h3>
+            </p>
+          </div>
+        </div>
+
+        <div class="row" id="threadContainer" style="max-height: 34em; overflow-y: auto;">
+          <div class="col-md-12 col-lg-12 col-xl-12">
             <ul class="list-unstyled" id="conversationThread"></ul>
           </div>
         </div>
@@ -51,6 +62,74 @@
 
 
       <script>
+        var CurrentChatTargetUserID;
+        var CurrentChatTargetUserPhoto;
+        var CurrentChatTargetUserName;
+
+        function scrollToBottom() {
+          const chatContainer = document.getElementById('threadContainer');
+
+          // Use a timeout to ensure that DOM is updated before scrolling
+          setTimeout(() => {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+          }, 100); // Delay the scroll by 100ms
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+          const messageInput = document.getElementById('textAreaExample2');
+          const sendButton = document.querySelector('.btn.btn-info.btn-rounded.float-end');
+
+          // Function to send the message
+          async function sendMessage() {
+            const message = messageInput.value.trim();
+
+            if (!message) {
+              alert('Message cannot be empty');
+              return;
+            }
+
+            try {
+              const response = await fetch('<?= site_url("/user/messenger/send-message"); ?>?to_id=' + CurrentChatTargetUserID + '&message=' + encodeURIComponent(message), {
+                method: 'POST',
+              });
+
+              const data = await response.json();
+
+              if (data.status === 'success') {
+                messageInput.value = ''; // Clear the message input field
+
+                // Reload the conversation and scroll to the bottom
+                loadConversation(CurrentChatTargetUserID, CurrentChatTargetUserName, CurrentChatTargetUserPhoto);
+
+                // Scroll to bottom after sending the message
+                scrollToBottom();
+              } else {
+                console.error('Error sending message:', data);
+              }
+            } catch (error) {
+              console.error('Error during message send:', error);
+            }
+          }
+
+
+          // Event listener for button click
+          sendButton.addEventListener('click', function() {
+            sendMessage();
+          });
+
+          // Event listener for pressing Enter key in the textarea
+          messageInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+              event.preventDefault(); // Prevent newline in the textarea
+              sendMessage();
+            }
+          });
+        });
+
+
+
+
+
         // Function to load conversations
         // Function to load conversations
         async function loadConversations() {
@@ -120,9 +199,16 @@
         }
 
 
-        // Function to load conversation for a specific user
+
         function loadConversation(otherUserID, otherUserName, otherUserPhoto) {
-          const chatContainer = document.getElementById('conversationThread'); // Select the chat container
+
+          CurrentChatTargetUserID = otherUserID;
+          CurrentChatTargetUserPhoto = otherUserPhoto;
+          CurrentChatTargetUserName = otherUserName;
+
+          const chatContainer = document.getElementById('conversationThread');
+          document.getElementById('userNameTitle').innerHTML = otherUserName;
+          document.getElementById('userImage').src = otherUserPhoto;
           let currentUserID;
 
           // First, fetch the current user ID
@@ -145,58 +231,53 @@
             .then(response => response.json())
             .then(data => {
               chatContainer.innerHTML = ''; // Clear existing messages
-
-              // Check if there are any messages
-              if (data.length === 0) {
-                // If no messages, display "Start a Conversation"
-                chatContainer.innerHTML = `
-          <div class="text-center my-4">
-            <p class="text-muted">Start a Conversation</p>
-          </div>
-        `;
-              } else {
-                // Loop through each chat message
+              if (data.length > 0) {
                 data.forEach(chat => {
-                  // Create a list item for each message
                   const messageItem = document.createElement('li');
                   messageItem.classList.add('d-flex', 'justify-content-between', 'mb-4');
 
-                  // Determine if the message is from the current user or the other user
                   if (chat.sender == currentUserID) {
                     // Current user message (Right side)
                     messageItem.innerHTML = `
-              <div class="w-50"></div>  
-              <div class="card w-50">
-                  <div class="card-header d-flex justify-content-between p-3">
-                      <p class="fw-bold mb-0">You</p>
-                      <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${chat.created_at}</p>
-                  </div>
-                  <div class="card-body">
-                      <p class="mb-0">${chat.message}</p>
-                  </div>
+            <div class="w-50"></div>  
+            <div class="card w-50">
+              <div class="card-header d-flex justify-content-between p-3">
+                <p class="fw-bold mb-0">You</p>
+                <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${chat.created_at}</p>
               </div>
+              <div class="card-body">
+                <p class="mb-0">${chat.message}</p>
+              </div>
+            </div>
           `;
                   } else {
                     // Other user message (Left side)
                     messageItem.innerHTML = `
-              <div class="card w-50">
-                  <div class="card-header d-flex justify-content-between p-3">
-                      <div class="avatar avatar-online">
-                          <img src="${otherUserPhoto}" alt="${otherUserName}" class="w-px-60 h-auto rounded-circle">
-                      </div>
-                      <p class="fw-bold mb-0">${otherUserName}</p>
-                      <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${chat.created_at}</p>
-                  </div>
-                  <div class="card-body">
-                      <p class="mb-0">${chat.message}</p>
-                  </div>
+            <div class="card w-50">
+              <div class="card-header d-flex justify-content-between p-3">
+                <div class="avatar avatar-online">
+                  <img src="${otherUserPhoto}" alt="" class="w-px-60 h-auto rounded-circle">
+                </div>
+                <p class="fw-bold mb-0">${otherUserName}</p>
+                <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${chat.created_at}</p>
               </div>
+              <div class="card-body">
+                <p class="mb-0">${chat.message}</p>
+              </div>
+            </div>
           `;
                   }
 
                   // Append the message item to the chat container
                   chatContainer.appendChild(messageItem);
                 });
+
+                // Scroll to the bottom of the conversation thread after messages are loaded
+                scrollToBottom();
+
+              } else {
+                // If there are no messages, show the "Start a Conversation" text
+                chatContainer.innerHTML = `<p class="text-muted">Start a conversation</p>`;
               }
             })
             .catch(error => {
