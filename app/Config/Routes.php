@@ -66,3 +66,4 @@ $routes->post('/user/messenger/get-chats', 'ChatController::getChats');         
 $routes->post('/user/messenger/send-message', 'ChatController::sendMessage');                       //Sends Message (to_id=USER_ID&message=STRING)
 $routes->post('/user/messenger/search', 'ChatController::search');                                  //Search By Username or Name (Returns JSON list)
 $routes->post('/user/messenger/update-last-seen', 'UserController::updateLastSeen');                //Current Update User Last Seen (Returns JSON list)
+$routes->get('/user/messenger/getUserID', 'UserController::GetUserID');                             //Get Current User ID

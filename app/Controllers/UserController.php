@@ -94,10 +94,30 @@ class UserController extends BaseController
             } else {
                 return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update last seen time'], 500);
             }
-
         } else {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized'], 403);
         }
+    }
+
+    public function GetUserID()
+    {
+
+            $session = session();
+            $userId = $session->get('user_id');
+            // Get the currently logged-in user's ID from the session
+            if (!$userId) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'ID Not Found'
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'ID Returned',
+                    'userid' => $userId
+                ]);
+            }
+
     }
 
 
