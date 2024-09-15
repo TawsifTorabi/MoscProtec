@@ -62,7 +62,9 @@ class ChatController extends BaseController
         $lastChat = $chatModel->getLastChat($id_1, $id_2);
 
         // Return the last chat (you can return a view or JSON response)
-        return $this->response->setJSON(['lastChat' => $lastChat]);
+        return $this->response->setJSON([
+            'lastChat' => $lastChat
+        ]);
     }
 
 
@@ -230,12 +232,19 @@ class ChatController extends BaseController
 
             if (!empty($conversations)) {
                 foreach ($conversations as $conversation) {
+                    $lastChatData = $this->lastChat(session()->get('user_id'), $conversation['id']);
+                    $unreadCount = $this->countUnreadMessages(session()->get('user_id'), $conversation['id']);
+
                     $data[] = [
                         'name' => $conversation['name'],
                         'username' => $conversation['username'],
                         'userid' => $conversation['id'],
                         'profile_picture' => site_url('/global/photos/profile/') . $conversation['username'],
-                        'last_message' => $this->lastChat(session()->get('user_id'), $conversation['id']),
+                        'last_message' => $lastChatData['message'],
+                        'last_message_time' => $lastChatData['created_at'],
+                        'last_message_time_raw' => $lastChatData['raw_created_at'],
+                        'opened' => $lastChatData['opened'],
+                        'unread_count' => $unreadCount,  // Add the unread message count here
                         'last_seen' => $this->lastSeen($conversation['lastseen']),
                         'is_online' => $this->lastSeen($conversation['lastseen']) === 'Active'
                     ];
@@ -250,6 +259,8 @@ class ChatController extends BaseController
             return $this->response->setJSON(['error' => 'Unauthorized'], 403);
         }
     }
+
+
 
     private function lastChat($id_1, $id_2)
     {
@@ -273,21 +284,36 @@ class ChatController extends BaseController
         // Fetch the result
         $lastChat = $builder->get()->getRowArray();
 
-        // Debugging the result to verify the query
-        //print_r($lastChat);
-
-        // Return the message content or an empty string if none exists
-        return $lastChat ? htmlspecialchars($lastChat['message'], ENT_QUOTES) : '';
+        // If a message exists, return message content, created_at, and opened status
+        return $lastChat ? [
+            'message' => htmlspecialchars($lastChat['message'], ENT_QUOTES),
+            'created_at' => $this->lastSeen($lastChat['created_at']),
+            'raw_created_at' => $lastChat['created_at'],
+            'opened' => $lastChat['opened']
+        ] : [
+            'message' => '',
+            'created_at' => '',
+            'raw_created_at' => '',
+            'opened' => 0
+        ];
     }
 
 
 
 
+    private function countUnreadMessages($id_1, $id_2)
+    {
+        $chatModel = new \App\Models\ChatModel();
+        $builder = $chatModel->builder();
 
+        // Fetch all unread messages in the conversation where the current user is the recipient
+        $builder->where('to_id', $id_1) // The recipient is the current user
+            ->where('from_id', $id_2) // The sender is the other user
+            ->where('opened', 0); // Only messages that are not opened
 
-
-
-
+        // Return the count of unread messages
+        return $builder->countAllResults();
+    }
 
 
 
