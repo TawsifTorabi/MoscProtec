@@ -65,5 +65,5 @@ $routes->get('/user/messenger/conversations', 'ChatController::Conversation');  
 $routes->post('/user/messenger/get-chats', 'ChatController::getChats');                             //Get Chats from 2 two user thread and Mark Them as Read (get-chats?id_2=DESTINATION_USER_ID)
 $routes->post('/user/messenger/send-message', 'ChatController::sendMessage');                       //Sends Message (to_id=USER_ID&message=STRING)
 $routes->post('/user/messenger/search', 'ChatController::search');                                  //Search By Username or Name (Returns JSON list)
-$routes->post('/user/messenger/update-last-seen', 'UserController::updateLastSeen');                //Current Update User Last Seen (Returns JSON list)
-$routes->get('/user/messenger/getUserID', 'UserController::GetUserID');                             //Get Current User ID
+$routes->post('/user/messenger/update-last-seen', 'UserController::updateLastSeen');                //Current Update User Last Seen (Returns JSON list) 
+$routes->get('/user/messenger/getUserID', 'UserController::GetUserID');                             //Get Current User ID --

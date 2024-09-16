@@ -234,14 +234,14 @@
               if (data.length > 0) {
                 data.forEach(chat => {
                   const messageItem = document.createElement('li');
-                  messageItem.classList.add('d-flex', 'justify-content-between', 'mb-4');
+                  messageItem.classList.add('d-flex', 'justify-content-start', 'mb-4');
 
                   if (chat.sender == currentUserID) {
                     // Current user message (Right side)
                     messageItem.innerHTML = `
-            <div class="w-50"></div>  
-            <div class="card w-50">
-              <div class="card-header d-flex justify-content-between p-3">
+            <div class="w-25"></div>  
+            <div class="card w-75">
+              <div class="card-header d-flex justify-content-start p-3">
                 <p class="fw-bold mb-0">You</p>
                 <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${chat.created_at}</p>
               </div>
@@ -253,13 +253,17 @@
                   } else {
                     // Other user message (Left side)
                     messageItem.innerHTML = `
-            <div class="card w-50">
-              <div class="card-header d-flex justify-content-between p-3">
-                <div class="avatar avatar-online">
-                  <img src="${otherUserPhoto}" alt="" class="w-px-60 h-auto rounded-circle">
+            <div class="card w-75">
+              <div class="card-header d-flex p-2">
+                <div class="d-flex">
+                  <div class="p-2 avatar avatar-online">
+                    <img src="${otherUserPhoto}" alt="" class="w-px-60 h-auto rounded-circle">
+                  </div>
+                  <p class="fw-bold mb-0">${otherUserName}</p>
+                  <div class="ml-auto p-2">
+                    <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${chat.created_at}</p>
+                  </div>
                 </div>
-                <p class="fw-bold mb-0">${otherUserName}</p>
-                <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${chat.created_at}</p>
               </div>
               <div class="card-body">
                 <p class="mb-0">${chat.message}</p>
@@ -290,6 +294,32 @@
 
         // Load conversations on page load
         loadConversations();
+
+
+
+        // Function to update the last seen time
+        function updateLastSeen() {
+          fetch('<?= site_url('/user/messenger/update-last-seen'); ?>', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === 'success') {
+                console.log('Last seen time updated:', data.message);
+              } else {
+                console.error('Failed to update last seen:', data.message);
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+        }
+
+        // Set an interval to call the updateLastSeen function every 10 seconds (10,000 milliseconds)
+        setInterval(updateLastSeen, 10000);
       </script>
 
     </div>
