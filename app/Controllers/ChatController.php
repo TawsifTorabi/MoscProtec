@@ -152,9 +152,7 @@ class ChatController extends BaseController
 
 
 
-
-
-    //Search for Users to Chat
+    // Search for Users to Chat
     public function search()
     {
         // Check if the user is logged in
@@ -162,42 +160,56 @@ class ChatController extends BaseController
             // Check if the search key is submitted
             $key = $this->request->getVar('key');
             if ($key) {
-                // Load the database library
+                // Load the necessary models
                 $db = \Config\Database::connect();
+                $conversationModel = new ConversationModel();
 
                 // Create search keyword
                 $key = "%" . $key . "%";
 
-                // Prepare SQL query
-                $sql = "SELECT * FROM `user` WHERE `username` LIKE ? OR `name` LIKE ?";
+                // Prepare SQL query to search for users by username or name
+                $sql = "SELECT * FROM `user` WHERE (`username` LIKE ? OR `name` LIKE ?)";
                 $query = $db->query($sql, [$key, $key]);
 
-                // Fetch results
+                // Fetch the search results
                 $users = $query->getResultArray();
 
-                // Prepare response
+                // Prepare the response array
                 $response = [];
+
                 if (!empty($users)) {
                     foreach ($users as $user) {
-                        // Exclude the current user
+                        // Exclude the current user from the results
                         if ($user['id'] == session()->get('userid')) continue;
 
+                        // Fetch last conversation data if any
+                        $lastChatData = $this->lastChat(session()->get('user_id'), $user['id']);
+                        $unreadCount = $this->countUnreadMessages(session()->get('user_id'), $user['id']);
+
+                        // Build the response structure similar to the conversation method
                         $response[] = [
-                            'username' => $user['username'],
                             'name' => $user['name'],
+                            'username' => $user['username'],
+                            'userid' => $user['id'],
                             'profile_picture' => site_url('/global/photos/profile/') . $user['username'],
-                            'chat_url' => site_url('chat.php?user=' . $user['username'])
+                            'last_message' => $lastChatData ? $lastChatData['message'] : 'No message yet',
+                            'last_message_time' => $lastChatData ? $lastChatData['created_at'] : '',
+                            'last_message_time_raw' => $lastChatData ? $lastChatData['raw_created_at'] : 0,
+                            'opened' => $lastChatData ? $lastChatData['opened'] : 0,
+                            'unread_count' => $unreadCount,  // Add the unread message count here
+                            'last_seen' => $this->lastSeen($user['lastseen']),
+                            'is_online' => $this->lastSeen($user['lastseen']) === 'Active'
                         ];
                     }
                 } else {
+                    // If no users are found, return an appropriate message
                     $response = [
                         'status' => 'error',
-                        'message' => 'The user "' . htmlspecialchars($key) . '" is not
-                     found.'
+                        'message' => 'No users found for the search term "' . htmlspecialchars($key) . '".'
                     ];
                 }
 
-                // Return JSON response
+                // Return the response as JSON
                 return $this->response->setJSON($response);
             } else {
                 return $this->response->setJSON(['error' => 'Search key not provided'], 400);
@@ -206,7 +218,6 @@ class ChatController extends BaseController
             return $this->response->setJSON(['error' => 'Unauthorized'], 403);
         }
     }
-
 
 
 

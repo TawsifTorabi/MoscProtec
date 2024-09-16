@@ -16,12 +16,14 @@
         <div class="card">
           <div class="card-body">
 
+            <!-- Search Input -->
             <div class="input-group input-group-merge">
               <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-              <input type="text" class="form-control" placeholder="Search..." aria-label="Search..." aria-describedby="basic-addon-search31">
+              <input type="text" class="form-control" id="searchInput" placeholder="Search..." aria-label="Search..." aria-describedby="basic-addon-search31" onkeyup="searchConversations()">
             </div>
 
-            <ul class="list-unstyled mb-0" id="conversationList"></ul>
+            <!-- Conversation List -->
+            <ul class="list-unstyled mb-0" style="overflow-y: auto; max-height: 41em;" id="conversationList"></ul>
 
           </div>
         </div>
@@ -128,6 +130,86 @@
 
 
 
+
+
+        // Function to perform search and load the results
+        async function searchConversations() {
+          const searchKey = document.getElementById('searchInput').value.trim();
+
+          if (searchKey === '') {
+            loadConversations(); // If search is empty, load all conversations
+            return;
+          }
+
+          try {
+            // Send POST request to search API
+            const response = await fetch('<?= site_url('/user/messenger/search'); ?>', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              body: `key=${encodeURIComponent(searchKey)}`
+            });
+
+            let searchResults = await response.json();
+
+            const conversationList = document.getElementById('conversationList');
+            conversationList.innerHTML = ''; // Clear existing list
+
+            if (searchResults.length === 0) {
+              conversationList.innerHTML = '<li>No users found</li>';
+              return;
+            }
+
+            // Loop through the search results
+            searchResults.forEach(conversation => {
+              // Determine if there are unread messages
+              const unreadBadge = conversation.unread_count > 0 ?
+                `<span class="badge bg-danger float-end">${conversation.unread_count}</span>` :
+                '';
+
+              // Check if the message was opened (for the double tick icon)
+              const messageStatus = conversation.opened === "1" ?
+                '<i class="fas fa-check-double" aria-hidden="true"></i>' :
+                '<i class="fas fa-check" aria-hidden="true"></i>';
+
+              // Conditionally apply the `avatar-online` class if the user is online
+              const avatarClass = conversation.is_online ?
+                'avatar avatar-online' :
+                'avatar';
+
+              // Create the list item
+              const listItem = `
+          <li class="p-2 border-bottom ${conversation.is_online ? 'bg-body-tertiary' : ''}">
+            <a href="#!" onclick="loadConversation(${conversation.userid}, '${conversation.name}', '${conversation.profile_picture}')" class="d-flex justify-content-between">
+              <div class="d-flex flex-row">
+                <div class="${avatarClass}">
+                  <img src="${conversation.profile_picture}" alt="${conversation.name}" class="w-px-60 h-auto rounded-circle">
+                </div>
+                <div class="pt-1">
+                  <p class="fw-bold mb-0">${conversation.name}</p>
+                  <p class="small text-muted">${conversation.last_message || 'No message yet'}</p>
+                </div>
+              </div>
+              <div class="pt-1">
+                <p class="small text-muted mb-1">${conversation.last_message_time || 'Just now'}</p>
+                ${unreadBadge}
+                <span class="text-muted float-end">${messageStatus}</span>
+              </div>
+            </a>
+          </li>
+        `;
+
+              // Append the list item to the conversation list
+              conversationList.innerHTML += listItem;
+            });
+
+          } catch (error) {
+            console.error('Error fetching search results:', error);
+          }
+        }
+
+        
 
 
         // Function to load conversations
@@ -242,11 +324,12 @@
             <div class="w-25"></div>  
             <div class="card w-75">
               <div class="card-header d-flex justify-content-start p-3">
-                <p class="fw-bold mb-0">You</p>
-                <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${chat.created_at}</p>
               </div>
               <div class="card-body">
                 <p class="mb-0">${chat.message}</p>
+                <div class="ml-auto p-2">
+                  <p class="text-muted small mb-0"><i class='bx bx-time-five'></i> ${chat.created_at}</p>
+                </div>
               </div>
             </div>
           `;
@@ -259,14 +342,13 @@
                   <div class="p-2 avatar avatar-online">
                     <img src="${otherUserPhoto}" alt="" class="w-px-60 h-auto rounded-circle">
                   </div>
-                  <p class="fw-bold mb-0">${otherUserName}</p>
-                  <div class="ml-auto p-2">
-                    <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${chat.created_at}</p>
-                  </div>
                 </div>
               </div>
               <div class="card-body">
                 <p class="mb-0">${chat.message}</p>
+                <div class="ml-auto p-2">
+                  <p class="text-muted small mb-0"><i class='bx bx-time-five'></i> ${chat.created_at}</p>
+                </div>
               </div>
             </div>
           `;
@@ -294,7 +376,6 @@
 
         // Load conversations on page load
         loadConversations();
-
       </script>
 
     </div>
