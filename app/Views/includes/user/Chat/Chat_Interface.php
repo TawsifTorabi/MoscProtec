@@ -295,31 +295,6 @@
         // Load conversations on page load
         loadConversations();
 
-
-
-        // Function to update the last seen time
-        function updateLastSeen() {
-          fetch('<?= site_url('/user/messenger/update-last-seen'); ?>', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            })
-            .then(response => response.json())
-            .then(data => {
-              if (data.status === 'success') {
-                console.log('Last seen time updated:', data.message);
-              } else {
-                console.error('Failed to update last seen:', data.message);
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
-        }
-
-        // Set an interval to call the updateLastSeen function every 10 seconds (10,000 milliseconds)
-        setInterval(updateLastSeen, 10000);
       </script>
 
     </div>
