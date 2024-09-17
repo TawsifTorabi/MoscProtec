@@ -224,7 +224,7 @@ class LoginController extends BaseController
             'name' => 'required|min_length[3]',
             'phone' => 'required|numeric|exact_length[11]',
             'dob' => 'required|valid_date',
-            'username' => 'required',
+            'username' => 'required|min_length[3]',
             'gender' => 'required|in_list[Male,Female,Other]',
             'blood_group' => 'required|min_length[2]',
             'password' => 'required|min_length[6]',
