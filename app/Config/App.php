@@ -18,7 +18,7 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://localhost/CI/moscprotec';
+    public string $baseURL = 'http://103.178.67.206/ci/moscprotec';
     //public string $baseURL = 'http://103.178.67.206/ci/MoscProtec/';
     // public string $baseURL = 'http://tawsiftorabi.ddns.net/ci/MoscProtec/';
 
@@ -33,7 +33,7 @@ class App extends BaseConfig
      *
      * @var list<string>
      */
-    public array $allowedHostnames = [];
+    public array $allowedHostnames = ['http://tawsiftorabi.ddns.net/CI/moscprotec', 'http://103.178.67.206/ci/MoscProtec/'];
 
     /**
      * --------------------------------------------------------------------------

@@ -28,7 +28,7 @@ class ProfileController extends Controller
 
         // If user has no profile photo, serve the default placeholder
         if (empty($user['pp'])) {
-            $placeholderPath = FCPATH . 'assets/img/placeholder_square.jpeg'; // Use full path for serving
+            $placeholderPath = FCPATH . 'assets/chat/img/user-default.png'; // Use full path for serving
             return $this->serveImage($placeholderPath);
         }
 
@@ -37,7 +37,7 @@ class ProfileController extends Controller
 
         if (!is_file($filePath)) {
             // If file does not exist, serve the default placeholder image
-            $placeholderPath = FCPATH . 'assets/img/placeholder_square.jpeg';
+            $placeholderPath = FCPATH . 'assets/chat/img/user-default.png';
             return $this->serveImage($placeholderPath);
         }
 

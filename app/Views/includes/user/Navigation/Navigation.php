@@ -32,7 +32,7 @@
             ],
             [
                 'title' => 'Doctor Appointment',
-                'icon' => 'bx-layout',
+                'icon' => 'bx-plus-medical',
                 'link' => 'javascript:void(0);',
                 'sub_menu' => [
                     ['title' => 'Create Appointment', 'link' => site_url('user/medical/appointment/create')],
@@ -42,7 +42,7 @@
             ],
             [
                 'title' => 'Disease Mapping',
-                'icon' => 'bx-layout',
+                'icon' => 'bxs-virus',
                 'link' => 'javascript:void(0);',
                 'sub_menu' => [
                     ['title' => 'Local Heatmap', 'link' => site_url('user/heatmap')],
@@ -52,7 +52,7 @@
             ],
             [
                 'title' => 'Blood Donation',
-                'icon' => 'bx-copy',
+                'icon' => 'bx-donate-blood',
                 'link' => 'javascript:void(0);',
                 'sub_menu' => [
                     ['title' => 'Request Donation', 'link' => site_url('user/bloodbank/request')],
@@ -64,7 +64,7 @@
             ],
             [
                 'title' => 'Mosquito Identification',
-                'icon' => 'bx-copy',
+                'icon' => 'bx-bug',
                 'link' => 'javascript:void(0);',
                 'sub_menu' => [
                     ['title' => 'Image Classification', 'link' => site_url('user/ai/classifier')],
@@ -74,7 +74,7 @@
             ],
             [
                 'title' => 'Account Settings',
-                'icon' => 'bx-dock-top',
+                'icon' => 'bxs-user-circle',
                 'link' => 'javascript:void(0);',
                 'sub_menu' => [
                     ['title' => 'Account Details', 'link' => site_url('user/settings')],
