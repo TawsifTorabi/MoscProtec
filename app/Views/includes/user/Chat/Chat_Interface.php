@@ -132,6 +132,8 @@
 
 
 
+
+
         // Function to perform search and load the results
         async function searchConversations() {
           const searchKey = document.getElementById('searchInput').value.trim();
@@ -209,10 +211,8 @@
           }
         }
 
-        
 
 
-        // Function to load conversations
         // Function to load conversations
         async function loadConversations() {
           try {
@@ -294,7 +294,7 @@
           let currentUserID;
 
           // First, fetch the current user ID
-          fetch('http://localhost/ci/moscprotec/user/messenger/getUserID', {
+          fetch('<?= site_url('/user/messenger/getUserID'); ?>', {
               method: 'GET',
             })
             .then(response => response.json())
@@ -303,7 +303,7 @@
                 currentUserID = userData.userid; // Get the current user ID
 
                 // Now, fetch the conversation
-                return fetch('http://localhost/ci/moscprotec/user/messenger/get-chats?id_2=' + otherUserID, {
+                return fetch('<?= site_url('/user/messenger/get-chats?id_2='); ?>' + otherUserID, {
                   method: 'POST',
                 });
               } else {
@@ -372,6 +372,21 @@
         }
 
 
+        
+
+        window.onload = function() {
+          // Call the function 3 seconds after page load
+          setTimeout(function() {
+            // Initial call
+            loadConversation(CurrentChatTargetUserID, CurrentChatTargetUserName, CurrentChatTargetUserPhoto);
+
+            // Set up a recurring call every 2 seconds after the first call
+            setInterval(function() {
+              loadConversation(CurrentChatTargetUserID, CurrentChatTargetUserName, CurrentChatTargetUserPhoto);
+            }, 2000); // 2000 milliseconds = 2 seconds
+
+          }, 3000); // 3000 milliseconds = 3 seconds
+        };
 
 
         // Load conversations on page load
