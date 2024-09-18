@@ -14,7 +14,7 @@ class AreaHeatmapController extends BaseController
 
         // Check if the user is logged in
         if ($this->isAuthenticated()) {
-            echo view('includes\user\AreaHeatMap\HeatMap_Header.php', $data);
+            echo view('AreaHeatMap\HeatMap_Header.php', $data);
             echo view('includes\user\AreaHeatMap\HeatMap_Head_Assets.php');
             echo view('includes\user\Navigation\Navigation.php');
             echo view('includes\user\Navigation\NavigationSecond.php');
