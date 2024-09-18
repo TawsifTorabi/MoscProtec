@@ -18,9 +18,9 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://103.178.67.206/ci/moscprotec';
-    //public string $baseURL = 'http://103.178.67.206/ci/MoscProtec/';
-    // public string $baseURL = 'http://tawsiftorabi.ddns.net/ci/MoscProtec/';
+    public string $baseURL = 'https://localhost/ci/moscprotec';
+    //public string $baseURL = 'https://103.178.67.206/ci/MoscProtec/';
+    // public string $baseURL = 'https://tawsiftorabi.ddns.net/ci/MoscProtec/';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
