@@ -18,7 +18,8 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'https://localhost/ci/moscprotec';
+    public string $baseURL = 'http://localhost/ci/moscprotec';
+    // public string $baseURL = 'http://localhost/ci/moscprotec';
     //public string $baseURL = 'https://103.178.67.206/ci/MoscProtec/';
     // public string $baseURL = 'https://tawsiftorabi.ddns.net/ci/MoscProtec/';
 
