@@ -35,9 +35,16 @@
                 'icon' => 'bx-plus-medical',
                 'link' => 'javascript:void(0);',
                 'sub_menu' => [
-                    ['title' => 'Create Appointment', 'link' => site_url('user/medical/appointment/create')],
-                    ['title' => 'Prescription History', 'link' => site_url('user/medical/prescription/history')],
-                    ['title' => 'Appointment History', 'link' => site_url('user/medical/appointment/history')],
+                    ['title' => 'Appointment Dashboard', 'link' => site_url('user/medical')],
+                    ['title' => 'Prescription History', 'link' => site_url('user/medical/history')]
+                ]
+            ],
+            [
+                'title' => 'Medical Counselling',
+                'icon' => 'bx-body',
+                'link' => 'javascript:void(0);',
+                'sub_menu' => [
+                    ['title' => 'Request Counseling', 'link' => site_url('user/counselling')]
                 ]
             ],
             [
@@ -55,11 +62,8 @@
                 'icon' => 'bx-donate-blood',
                 'link' => 'javascript:void(0);',
                 'sub_menu' => [
-                    ['title' => 'Request Donation', 'link' => site_url('user/bloodbank/request')],
-                    ['title' => 'List as Donor', 'link' => site_url('user/bloodbank/register')],
-                    ['title' => 'Nearby Requests', 'link' => site_url('user/bloodbank/requests')],
-                    ['title' => 'Nearby Donors', 'link' => site_url('user/bloodbank/doners')],
-                    ['title' => 'Bloodbank Settings', 'link' => site_url('user/bloodbank/settings')],
+                    ['title' => 'Donor List', 'link' => site_url('user/bloodbank/list')],
+                    ['title' => 'Donation History', 'link' => site_url('user/bloodbank/history')],
                 ]
             ],
             [

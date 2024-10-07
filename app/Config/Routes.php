@@ -50,11 +50,16 @@ $routes->get('/global/photos/currentUser', 'ProfileController::serveCurrentUserP
 $routes->get('/user/dashboard', 'AreaHeatmapController::index');
 //$routes->get('/user/dashboard', 'UserController::Dashboard');
 
-//Heatmap
+
+//************//
+///Heatmap  Pages
+//************//
 //User Heatmap Views
 $routes->get('/user/heatmap', 'AreaHeatmapController::index');                              //Mosquito Density Heatmap Landing Page
+$routes->get('/user/heatmap/report', 'AreaHeatmapController::report');                       //Mosquito Density Report Page
 //APIs
 $routes->get('/user/heatmap/getLocations', 'AreaHeatmapController::getLocations');          //Returns Coordinate Data to Client to generate Heatmap
+$routes->post('/user/heatmap/reportLocation', 'AreaHeatmapController::reportLocation');          //Returns Coordinate Data to Client to generate Heatmap
 
 
 //Messenger
@@ -71,6 +76,11 @@ $routes->get('/user/messenger/getUserID', 'UserController::GetUserID');         
 
 
 
+$routes->get('/user/medical', 'MedicalController::index');                                          //Mosquito Density Heatmap Landing Page
+$routes->get('/user/medical/history', 'MedicalController::history');                                          //Mosquito Density Heatmap Landing Page
+$routes->get('/user/bloodbank/list', 'MedicalController::donorList');                                          //Mosquito Density Heatmap Landing Page
+$routes->get('/user/bloodbank/history', 'MedicalController::bloodHistory');                                          //Mosquito Density Heatmap Landing Page
+$routes->get('/user/counselling', 'MedicalController::counselling');                                          //Mosquito Density Heatmap Landing Page
 
 
-//Courier API Integration
+
